@@ -1,4 +1,4 @@
-// Copyright (c) <2017> <Paulina Szklarska>
+// Copyright (c) <2019> <Paulina Szklarska>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -133,7 +133,7 @@ class BeaconBroadcast {
   ///
   /// After listening to this Stream, you'll be notified about changes in beacon advertising state.
   /// Returns `true` if beacon is advertising. See also: [isAdvertising()]
-  Stream<bool> listenForStateChange() {
+  Stream<bool> getAdvertisingStateChange() {
     return _eventChannel.receiveBroadcastStream().cast<bool>();
   }
 }
