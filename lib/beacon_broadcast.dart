@@ -103,8 +103,12 @@ class BeaconBroadcast {
   /// continue running in the foreground to broadcast the needed Bluetooth signals. If the user
   /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
-    if (_uuid == null || _uuid.isEmpty || _majorId == null || _minorId == null) {
-      throw new Exception("Illegal arguments! UUID, majorId and minorId must not be null or empty: "
+    if (_uuid == null ||
+        _uuid.isEmpty ||
+        _majorId == null ||
+        _minorId == null) {
+      throw new Exception(
+          "Illegal arguments! UUID, majorId and minorId must not be null or empty: "
           "UUID: $_uuid, majorId: $_majorId, minorId: $_minorId");
     }
 
