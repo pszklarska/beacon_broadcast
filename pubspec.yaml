@@ -2,7 +2,7 @@ name: beacon_broadcast
 description: A Flutter plugin for turning your device into a beacon.
 version: 0.0.1
 author: Paulina Szklarska <pszklarska@gmail.com>
-homepage:
+homepage: https://github.com/pszklarska/beacon_broadcast
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
