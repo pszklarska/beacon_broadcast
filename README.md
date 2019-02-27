@@ -49,10 +49,12 @@ beaconBroadcast.stop();
 
 #### Android
 
-For Android app, user needs to turn on Bluetooth first and grant location permission. 
+**Important note**: For Android app, user needs to turn on Bluetooth on the device first. 
+
+Android beacon will advertise as AltBeacon manufactured by RadiusNetwork. In current library version it 
+can't be changed.
 
 #### iOS
-
 For iOS, it's worth to mention that application needs to work in foreground. According to the 
 [CoreLocation](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon) 
 documentation:
@@ -62,6 +64,8 @@ documentation:
 > After advertising your app as a beacon, your app must continue running in the foreground to broadcast the needed 
 > Bluetooth signals. If the user quits the app, the system stops advertising the device as a peripheral over Bluetooth.
 
+
+iOS beacon will advertise as iBeacon. 
 ### About
 
 This plugin uses [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html) 
