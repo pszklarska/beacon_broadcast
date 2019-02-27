@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/beacon_broadcast.iml" filepath="$PROJECT_DIR$/beacon_broadcast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/beacon_broadcast_android.iml" filepath="$PROJECT_DIR$/android/beacon_broadcast_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/android/beacon_broadcast_example_android.iml" filepath="$PROJECT_DIR$/example/android/beacon_broadcast_example_android.iml" />
+    </modules>
+  </component>
+</project>
