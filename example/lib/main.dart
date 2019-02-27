@@ -19,7 +19,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _isAdvertisingSubscription = beaconBroadcast.listenForStateChange().listen((isAdvertising) {
+    _isAdvertisingSubscription =
+        beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
       setState(() {
         _isAdvertising = isAdvertising;
       });
@@ -43,6 +44,8 @@ class _MyAppState extends State<MyApp> {
                       .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
                       .setMajorId(1)
                       .setMinorId(100)
+                      .setTransmissionPower(-59)
+                      .setIdentifier("com.example.myDeviceRegion")
                       .start();
                 },
                 child: Text('START'),
