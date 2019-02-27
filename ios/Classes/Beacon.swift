@@ -21,15 +21,18 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
         print("starting with id... \(beaconData.uuid)")
         
         let proximityUUID = UUID(uuidString: beaconData.uuid)
-        let major : CLBeaconMajorValue = 100
-        let minor : CLBeaconMinorValue = 1
-        let beaconID = "com.example.myDeviceRegion"
+        let major : CLBeaconMajorValue = CLBeaconMajorValue(truncating: beaconData.majorId)
+        let minor : CLBeaconMinorValue = CLBeaconMinorValue(truncating: beaconData.minorId)
+        let beaconID = beaconData.identifier
         
         let region = CLBeaconRegion(proximityUUID: proximityUUID!,
                                     major: major, minor: minor, identifier: beaconID)
         
-        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-        beaconPeripheralData = region.peripheralData(withMeasuredPower: nil)
+        if (peripheralManager == nil) {
+            peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        }
+        
+        beaconPeripheralData = region.peripheralData(withMeasuredPower: beaconData.transmissionPower)
         shouldStartAdvertise = true
     }
     
@@ -41,7 +44,7 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
         }
     }
     
-    func isStarted() -> Bool {
+    func isAdvertising() -> Bool {
         if (peripheralManager == nil) {
             return false
         }
@@ -64,8 +67,16 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
 
 class BeaconData {
     var uuid: String
+    var majorId: NSNumber
+    var minorId: NSNumber
+    var transmissionPower: NSNumber?
+    var identifier: String
     
-    init(uuid: String) {
+    init(uuid: String, majorId:NSNumber, minorId: NSNumber, transmissionPower: NSNumber?, identifier: String) {
         self.uuid = uuid
+        self.majorId = majorId
+        self.minorId = minorId
+        self.transmissionPower = transmissionPower
+        self.identifier = identifier
     }
 }

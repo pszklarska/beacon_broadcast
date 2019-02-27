@@ -39,7 +39,11 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               RaisedButton(
                 onPressed: () {
-                  beaconBroadcast.setUUID('39ED98FF-2900-441A-802F-9C398FC199D2').start();
+                  beaconBroadcast
+                      .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
+                      .setMajorId(1)
+                      .setMinorId(100)
+                      .start();
                 },
                 child: Text('START'),
               ),

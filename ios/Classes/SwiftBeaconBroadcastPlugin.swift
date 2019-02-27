@@ -41,14 +41,20 @@ public class SwiftBeaconBroadcastPlugin: NSObject, FlutterPlugin, FlutterStreamH
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "start") {
             var map = call.arguments as? Dictionary<String, Any>
-            let beaconData = BeaconData(uuid: map?["uuid"] as! String)
+            let beaconData = BeaconData(
+                uuid: map?["uuid"] as! String,
+                majorId: map?["majorId"] as! NSNumber,
+                minorId: map?["minorId"] as! NSNumber,
+                transmissionPower: map?["transmissionPower"] as? NSNumber,
+                identifier: map?["identifier"] as! String
+            )
             beacon.start(beaconData: beaconData)
             result(nil)
         } else if (call.method == "stop") {
             beacon.stop()
             result(nil)
-        } else if (call.method == "isStarted") {
-            result(beacon.isStarted())
+        } else if (call.method == "isAdvertising") {
+            result(beacon.isAdvertising())
         } else {
             result(FlutterMethodNotImplemented)
         }

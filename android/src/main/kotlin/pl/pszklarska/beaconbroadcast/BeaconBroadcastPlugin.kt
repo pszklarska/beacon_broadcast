@@ -32,13 +32,12 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
     when (call.method) {
       "start" -> startBeacon(call, result)
       "stop" -> stopBeacon(result)
-      "isStarted" -> result.success(beacon.isStarted())
+      "isAdvertising" -> result.success(beacon.isAdvertising())
       else -> result.notImplemented()
     }
   }
 
   @Suppress("UNCHECKED_CAST")
-
   private fun startBeacon(call: MethodCall, result: MethodChannel.Result) {
     if (call.arguments !is Map<*, *>) {
       throw IllegalArgumentException("Arguments are not a map! " + call.arguments)
@@ -46,7 +45,10 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
 
     val arguments = call.arguments as Map<String, Any>
     val beaconData = BeaconData(
-        arguments["uuid"] as String
+        arguments["uuid"] as String,
+        arguments["majorId"] as Int,
+        arguments["minorId"] as Int,
+        arguments["transmissionPower"] as Int?
     )
 
     beacon.start(beaconData, advertiseCallback)
@@ -71,5 +73,8 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
 }
 
 data class BeaconData(
-    val uuid: String
+    val uuid: String,
+    val majorId: Int,
+    val minorId: Int,
+    val transmissionPower: Int?
 )

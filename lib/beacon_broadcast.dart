@@ -24,6 +24,10 @@ import 'package:flutter/services.dart';
 
 class BeaconBroadcast {
   String _uuid;
+  int _majorId;
+  int _minorId;
+  int _transmissionPower;
+  String _identifier = "";
 
   static const MethodChannel _methodChannel =
       const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
@@ -31,27 +35,104 @@ class BeaconBroadcast {
   static const EventChannel _eventChannel =
       const EventChannel('pl.pszklarska.beaconbroadcast/beacon_events');
 
+  /// Sets UUID for beacon.
+  ///
+  /// [uuid] is random string identifier, e.g. "2f234454-cf6d-4a0f-adf2-f4911ba9ffa6"
+  ///
+  /// This parameter is required
   BeaconBroadcast setUUID(String uuid) {
     _uuid = uuid;
     return this;
   }
 
+  /// Sets major id for beacon.
+  ///
+  /// [majorId] is integer identifier with range between 1 and 65535
+  ///
+  /// This parameter is required
+  BeaconBroadcast setMajorId(int majorId) {
+    _majorId = majorId;
+    return this;
+  }
+
+  /// Sets minor id for beacon.
+  ///
+  /// [minorId] is integer identifier with range between 1 and 65535
+  ///
+  /// This parameter is required
+  BeaconBroadcast setMinorId(int minorId) {
+    _minorId = minorId;
+    return this;
+  }
+
+  /// Sets identifier for beacon.
+  ///
+  /// This parameter is **iOS only** (it has no effect on Android). It's string that identifies
+  /// beacon additionally. You can check more info in article
+  /// [Turning an iOS Device into an iBeacon](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon)
+  ///
+  /// This parameter is optional
+  BeaconBroadcast setIdentifier(String identifier) {
+    _identifier = identifier;
+    return this;
+  }
+
+  /// Sets transmission power for beacon.
+  ///
+  /// Transmission power determines strength of the signal transmitted by beacon. It's measured in
+  /// dBm. Higher values amplify the signal strength, but also increase power usage.
+  ///
+  /// This parameter is optional, if not set, the default value for Android will be -59dB and for
+  /// iOS the default received signal strength indicator (RSSI) value associated with the iOS device
+  /// (see this article for more: [Turning an iOS Device into an iBeacon](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon)
+  BeaconBroadcast setTransmissionPower(int transmissionPower) {
+    _transmissionPower = transmissionPower;
+    return this;
+  }
+
+  /// Starts beacon advertising.
+  ///
+  /// Before starting you can set parameters such as [_uuid], [_majorId], [_minorId], [_identifier], [_transmissionPower].
+  /// Parameters [_uuid], [_majorId], [_minorId] are required.
+  ///
+  /// For Android, beacon layout is set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
+  /// On Android system, it's required to have Bluetooth turn on and to give app permission to location.
+  ///
+  /// For iOS, beacon is broadcasting as an iBeacon (check more details here: [Turning an iOS Device into an iBeacon](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon))
+  /// Note that according to the article: "After advertising your app as a beacon, your app must
+  /// continue running in the foreground to broadcast the needed Bluetooth signals. If the user
+  /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
+    if (_uuid == null || _uuid.isEmpty || _majorId == null || _minorId == null) {
+      throw new Exception("Illegal arguments! UUID, majorId and minorId must not be null or empty: "
+          "UUID: $_uuid, majorId: $_majorId, minorId: $_minorId");
+    }
+
     Map params = <String, dynamic>{
       "uuid": _uuid,
+      "majorId": _majorId,
+      "minorId": _minorId,
+      "transmissionPower": _transmissionPower,
+      "identifier": _identifier,
     };
 
     await _methodChannel.invokeMethod('start', params);
   }
 
+  /// Stops beacon advertising
   Future<void> stop() async {
     await _methodChannel.invokeMethod('stop');
   }
 
-  Future<bool> isStarted() async {
-    return await _methodChannel.invokeMethod('isStarted');
+  /// Returns `true` if beacon is advertising
+  Future<bool> isAdvertising() async {
+    return await _methodChannel.invokeMethod('isAdvertising');
   }
 
+  /// Returns Stream of booleans indicating if beacon is advertising.
+  ///
+  /// After listening to this Stream, you'll be notified about changes in beacon advertising state.
+  /// Returns `true` if beacon is advertising. See also: [isAdvertising()]
   Stream<bool> listenForStateChange() {
     return _eventChannel.receiveBroadcastStream().cast<bool>();
   }

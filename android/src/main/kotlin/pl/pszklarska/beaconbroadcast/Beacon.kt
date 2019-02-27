@@ -8,6 +8,8 @@ import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 import java.util.*
 
+const val ALT_BEACON_LAYOUT = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
+const val RADIUS_NETWORK_MANUFACTURER = 0x0118
 
 class Beacon {
 
@@ -15,8 +17,7 @@ class Beacon {
   private var advertiseCallback: ((Boolean) -> Unit)? = null
 
   fun init(context: Context) {
-    val beaconParser = BeaconParser()
-        .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25")
+    val beaconParser = BeaconParser().setBeaconLayout(ALT_BEACON_LAYOUT)
     beaconTransmitter = BeaconTransmitter(context, beaconParser)
   }
 
@@ -25,10 +26,10 @@ class Beacon {
 
     val beacon = Beacon.Builder()
         .setId1(beaconData.uuid)
-        .setId2("1")
-        .setId3("2")
-        .setManufacturer(0x0118)
-        .setTxPower(-59)
+        .setId2(beaconData.majorId.toString())
+        .setId3(beaconData.minorId.toString())
+        .setManufacturer(RADIUS_NETWORK_MANUFACTURER)
+        .setTxPower(beaconData.transmissionPower ?: -59)
         .setDataFields(Arrays.asList(0L))
         .build()
 
@@ -45,7 +46,7 @@ class Beacon {
     })
   }
 
-  fun isStarted(): Boolean {
+  fun isAdvertising(): Boolean {
     return beaconTransmitter.isStarted
   }
 
