@@ -10,16 +10,17 @@ import CoreBluetooth
 import CoreLocation
 
 class Beacon : NSObject, CBPeripheralManagerDelegate {
-
+    
     var peripheralManager: CBPeripheralManager!
     var beaconPeripheralData: NSDictionary!
     var onAdvertisingStateChanged: ((Bool) -> Void)?
-
-    override init() {
-        super.init()
+    
+    var shouldStartAdvertise: Bool = false
+    
+    func start(beaconData: BeaconData) {
+        print("starting with id... \(beaconData.uuid)")
         
-        let proximityUUID = UUID(uuidString:
-            "39ED98FF-2900-441A-802F-9C398FC199D2")
+        let proximityUUID = UUID(uuidString: beaconData.uuid)
         let major : CLBeaconMajorValue = 100
         let minor : CLBeaconMinorValue = 1
         let beaconID = "com.example.myDeviceRegion"
@@ -29,15 +30,9 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         beaconPeripheralData = region.peripheralData(withMeasuredPower: nil)
+        shouldStartAdvertise = true
     }
-
-    func start() {
-        if (peripheralManager != nil) {
-            print("start invoked")
-            peripheralManager.startAdvertising(((beaconPeripheralData as NSDictionary) as! [String : Any]))
-        }
-    }
-
+    
     func stop() {
         if (peripheralManager != nil) {
             print("stop invoked")
@@ -45,7 +40,7 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
             onAdvertisingStateChanged!(false)
         }
     }
-
+    
     func isStarted() -> Bool {
         if (peripheralManager == nil) {
             return false
@@ -56,5 +51,21 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
     func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         onAdvertisingStateChanged!(peripheral.isAdvertising)
     }
+    
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        if (peripheral.state == .poweredOn && shouldStartAdvertise) {
+            print("start invoked")
+            peripheralManager.startAdvertising(((beaconPeripheralData as NSDictionary) as! [String : Any]))
+            shouldStartAdvertise = false
+        }
+    }
+    
+}
 
+class BeaconData {
+    var uuid: String
+    
+    init(uuid: String) {
+        self.uuid = uuid
+    }
 }

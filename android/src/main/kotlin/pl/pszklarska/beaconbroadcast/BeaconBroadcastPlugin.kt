@@ -5,6 +5,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 
+
 class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
 
   private var eventSink: EventChannel.EventSink? = null
@@ -29,17 +30,32 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     when (call.method) {
-      "start" -> {
-        beacon.start(advertiseCallback)
-        result.success(null)
-      }
-      "stop" -> {
-        beacon.stop()
-        result.success(null)
-      }
+      "start" -> startBeacon(call, result)
+      "stop" -> stopBeacon(result)
       "isStarted" -> result.success(beacon.isStarted())
       else -> result.notImplemented()
     }
+  }
+
+  @Suppress("UNCHECKED_CAST")
+
+  private fun startBeacon(call: MethodCall, result: MethodChannel.Result) {
+    if (call.arguments !is Map<*, *>) {
+      throw IllegalArgumentException("Arguments are not a map! " + call.arguments)
+    }
+
+    val arguments = call.arguments as Map<String, Any>
+    val beaconData = BeaconData(
+        arguments["uuid"] as String
+    )
+
+    beacon.start(beaconData, advertiseCallback)
+    result.success(null)
+  }
+
+  private fun stopBeacon(result: MethodChannel.Result) {
+    beacon.stop()
+    result.success(null)
   }
 
   override fun onListen(event: Any?, eventSink: EventChannel.EventSink) {
@@ -53,3 +69,7 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
   }
 
 }
+
+data class BeaconData(
+    val uuid: String
+)

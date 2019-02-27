@@ -11,13 +11,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  BeaconBroadcast beaconBroadcast = BeaconBroadcast();
+
   bool _isAdvertising = false;
   StreamSubscription<bool> _isAdvertisingSubscription;
 
   @override
   void initState() {
     super.initState();
-    _isAdvertisingSubscription = BeaconBroadcast.listenForStateChange().listen((isAdvertising) {
+    _isAdvertisingSubscription = beaconBroadcast.listenForStateChange().listen((isAdvertising) {
       setState(() {
         _isAdvertising = isAdvertising;
       });
@@ -37,13 +39,13 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               RaisedButton(
                 onPressed: () {
-                  BeaconBroadcast.start();
+                  beaconBroadcast.setUUID('39ED98FF-2900-441A-802F-9C398FC199D2').start();
                 },
                 child: Text('START'),
               ),
               RaisedButton(
                 onPressed: () {
-                  BeaconBroadcast.stop();
+                  beaconBroadcast.stop();
                 },
                 child: Text('STOP'),
               ),

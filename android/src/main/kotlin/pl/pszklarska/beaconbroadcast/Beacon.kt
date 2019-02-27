@@ -3,7 +3,6 @@ package pl.pszklarska.beaconbroadcast
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseSettings
 import android.content.Context
-import android.os.Build
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
@@ -21,11 +20,11 @@ class Beacon {
     beaconTransmitter = BeaconTransmitter(context, beaconParser)
   }
 
-  fun start(advertiseCallback: ((Boolean) -> Unit)? = null) {
+  fun start(beaconData: BeaconData, advertiseCallback: ((Boolean) -> Unit)) {
     this.advertiseCallback = advertiseCallback
 
     val beacon = Beacon.Builder()
-        .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
+        .setId1(beaconData.uuid)
         .setId2("1")
         .setId3("2")
         .setManufacturer(0x0118)
@@ -33,21 +32,17 @@ class Beacon {
         .setDataFields(Arrays.asList(0L))
         .build()
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && advertiseCallback != null) {
-      beaconTransmitter.startAdvertising(beacon, object : AdvertiseCallback() {
-        override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
-          super.onStartSuccess(settingsInEffect)
-          advertiseCallback(true)
-        }
+    beaconTransmitter.startAdvertising(beacon, object : AdvertiseCallback() {
+      override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
+        super.onStartSuccess(settingsInEffect)
+        advertiseCallback(true)
+      }
 
-        override fun onStartFailure(errorCode: Int) {
-          super.onStartFailure(errorCode)
-          advertiseCallback(false)
-        }
-      })
-    } else {
-      beaconTransmitter.startAdvertising(beacon)
-    }
+      override fun onStartFailure(errorCode: Int) {
+        super.onStartFailure(errorCode)
+        advertiseCallback(false)
+      }
+    })
   }
 
   fun isStarted(): Boolean {

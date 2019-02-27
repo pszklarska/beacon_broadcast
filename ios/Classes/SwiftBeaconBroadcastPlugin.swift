@@ -20,7 +20,7 @@ public class SwiftBeaconBroadcastPlugin: NSObject, FlutterPlugin, FlutterStreamH
     }
     
     public func onListen(withArguments arguments: Any?,
-                  eventSink: @escaping FlutterEventSink) -> FlutterError? {
+                         eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
         return nil
     }
@@ -40,7 +40,9 @@ public class SwiftBeaconBroadcastPlugin: NSObject, FlutterPlugin, FlutterStreamH
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "start") {
-            beacon.start()
+            var map = call.arguments as? Dictionary<String, Any>
+            let beaconData = BeaconData(uuid: map?["uuid"] as! String)
+            beacon.start(beaconData: beaconData)
             result(nil)
         } else if (call.method == "stop") {
             beacon.stop()
