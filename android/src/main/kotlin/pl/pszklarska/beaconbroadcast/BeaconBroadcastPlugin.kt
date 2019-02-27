@@ -61,12 +61,10 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
   }
 
   override fun onListen(event: Any?, eventSink: EventChannel.EventSink) {
-    print("calling onEventListen")
     this.eventSink = eventSink
   }
 
   override fun onCancel(event: Any?) {
-    print("calling onEventCancel")
     this.eventSink = null
   }
 

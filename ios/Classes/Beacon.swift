@@ -18,8 +18,6 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
     var shouldStartAdvertise: Bool = false
     
     func start(beaconData: BeaconData) {
-        print("starting with id... \(beaconData.uuid)")
-        
         let proximityUUID = UUID(uuidString: beaconData.uuid)
         let major : CLBeaconMajorValue = CLBeaconMajorValue(truncating: beaconData.majorId)
         let minor : CLBeaconMinorValue = CLBeaconMinorValue(truncating: beaconData.minorId)
@@ -28,17 +26,13 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
         let region = CLBeaconRegion(proximityUUID: proximityUUID!,
                                     major: major, minor: minor, identifier: beaconID)
         
-        if (peripheralManager == nil) {
-            peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-        }
-        
+        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         beaconPeripheralData = region.peripheralData(withMeasuredPower: beaconData.transmissionPower)
         shouldStartAdvertise = true
     }
     
     func stop() {
         if (peripheralManager != nil) {
-            print("stop invoked")
             peripheralManager.stopAdvertising()
             onAdvertisingStateChanged!(false)
         }
@@ -57,7 +51,6 @@ class Beacon : NSObject, CBPeripheralManagerDelegate {
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         if (peripheral.state == .poweredOn && shouldStartAdvertise) {
-            print("start invoked")
             peripheralManager.startAdvertising(((beaconPeripheralData as NSDictionary) as! [String : Any]))
             shouldStartAdvertise = false
         }

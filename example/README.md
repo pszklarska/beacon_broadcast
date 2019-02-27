@@ -2,15 +2,82 @@
 
 Demonstrates how to use the beacon_broadcast plugin.
 
-## Getting Started
+## Example
 
-This project is a starting point for a Flutter application.
+``` dart
+import 'dart:async';
 
-A few resources to get you started if this is your first Flutter project:
+import 'package:beacon_broadcast/beacon_broadcast.dart';
+import 'package:flutter/material.dart';
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+void main() => runApp(MyApp());
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  BeaconBroadcast beaconBroadcast = BeaconBroadcast();
+
+  bool _isAdvertising = false;
+  StreamSubscription<bool> _isAdvertisingSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _isAdvertisingSubscription =
+        beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
+      setState(() {
+        _isAdvertising = isAdvertising;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  beaconBroadcast
+                      .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
+                      .setMajorId(1)
+                      .setMinorId(100)
+                      .setTransmissionPower(-59)
+                      .setIdentifier("com.example.myDeviceRegion")
+                      .start();
+                },
+                child: Text('START'),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  beaconBroadcast.stop();
+                },
+                child: Text('STOP'),
+              ),
+              Text('Current state: $_isAdvertising')
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_isAdvertisingSubscription != null) {
+      _isAdvertisingSubscription.cancel();
+    }
+  }
+}
+
+```
