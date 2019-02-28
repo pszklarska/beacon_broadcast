@@ -1,3 +1,8 @@
+## 0.1.1
+
+Adding method for checking if transmission is supported on the device.
+
+
 ## 0.1.0
 
 First stable version of the app. No major changes

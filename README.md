@@ -75,6 +75,6 @@ for iOS.
 ### Todo
 
 There are still few things left to implement:
+- [X] Adding option for checking for Android device support programmatically
 - [ ] Adding option to set layout and manufacturer for Android implementation
 - [ ] Handle turning on BLE and granting location permission on Android
-- [ ] Adding option for checking for Android device support programmatically

@@ -6,6 +6,7 @@ import android.content.Context
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
+import org.altbeacon.beacon.BeaconTransmitter.checkTransmissionSupported
 import java.util.*
 
 const val ALT_BEACON_LAYOUT = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
@@ -13,12 +14,17 @@ const val RADIUS_NETWORK_MANUFACTURER = 0x0118
 
 class Beacon {
 
-  private lateinit var beaconTransmitter: BeaconTransmitter
+  private lateinit var context: Context
+  private var beaconTransmitter: BeaconTransmitter? = null
   private var advertiseCallback: ((Boolean) -> Unit)? = null
 
   fun init(context: Context) {
-    val beaconParser = BeaconParser().setBeaconLayout(ALT_BEACON_LAYOUT)
-    beaconTransmitter = BeaconTransmitter(context, beaconParser)
+    this.context = context
+
+    if (isTransmissionSupported() == 0) {
+      val beaconParser = BeaconParser().setBeaconLayout(ALT_BEACON_LAYOUT)
+      beaconTransmitter = BeaconTransmitter(context, beaconParser)
+    }
   }
 
   fun start(beaconData: BeaconData, advertiseCallback: ((Boolean) -> Unit)) {
@@ -33,7 +39,7 @@ class Beacon {
         .setDataFields(Arrays.asList(0L))
         .build()
 
-    beaconTransmitter.startAdvertising(beacon, object : AdvertiseCallback() {
+    beaconTransmitter?.startAdvertising(beacon, object : AdvertiseCallback() {
       override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
         super.onStartSuccess(settingsInEffect)
         advertiseCallback(true)
@@ -47,11 +53,15 @@ class Beacon {
   }
 
   fun isAdvertising(): Boolean {
-    return beaconTransmitter.isStarted
+    return beaconTransmitter?.isStarted ?: false
+  }
+
+  fun isTransmissionSupported(): Int {
+    return checkTransmissionSupported(context)
   }
 
   fun stop() {
-    beaconTransmitter.stopAdvertising()
+    beaconTransmitter?.stopAdvertising()
     advertiseCallback?.invoke(false)
   }
 

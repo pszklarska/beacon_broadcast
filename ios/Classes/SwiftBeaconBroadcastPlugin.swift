@@ -39,24 +39,45 @@ public class SwiftBeaconBroadcastPlugin: NSObject, FlutterPlugin, FlutterStreamH
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "start") {
-            var map = call.arguments as? Dictionary<String, Any>
-            let beaconData = BeaconData(
-                uuid: map?["uuid"] as! String,
-                majorId: map?["majorId"] as! NSNumber,
-                minorId: map?["minorId"] as! NSNumber,
-                transmissionPower: map?["transmissionPower"] as? NSNumber,
-                identifier: map?["identifier"] as! String
-            )
-            beacon.start(beaconData: beaconData)
-            result(nil)
-        } else if (call.method == "stop") {
-            beacon.stop()
-            result(nil)
-        } else if (call.method == "isAdvertising") {
-            result(beacon.isAdvertising())
-        } else {
+        switch (call.method) {
+        case "start":
+            startBeacon(call, result)
+        case "stop":
+            stopBeacon(call, result)
+        case "isAdvertising":
+            isAdvertising(call, result)
+        case "isTransmissionSupported":
+            isTransmissionSupported(call, result)
+        default:
             result(FlutterMethodNotImplemented)
         }
+    }
+    
+    private func startBeacon(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        var map = call.arguments as? Dictionary<String, Any>
+        let beaconData = BeaconData(
+            uuid: map?["uuid"] as! String,
+            majorId: map?["majorId"] as! NSNumber,
+            minorId: map?["minorId"] as! NSNumber,
+            transmissionPower: map?["transmissionPower"] as? NSNumber,
+            identifier: map?["identifier"] as! String
+        )
+        beacon.start(beaconData: beaconData)
+        result(nil)
+    }
+    
+    private func stopBeacon(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        beacon.stop()
+        result(nil)
+    }
+    
+    private func isAdvertising(_ call: FlutterMethodCall,
+                               _ result: @escaping FlutterResult) {
+        result(beacon.isAdvertising())
+    }
+    
+    private func isTransmissionSupported(_ call: FlutterMethodCall,
+                               _ result: @escaping FlutterResult) {
+        result(0)
     }
 }

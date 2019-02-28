@@ -33,6 +33,7 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
       "start" -> startBeacon(call, result)
       "stop" -> stopBeacon(result)
       "isAdvertising" -> result.success(beacon.isAdvertising())
+      "isTransmissionSupported" -> isTransmissionSupported(result)
       else -> result.notImplemented()
     }
   }
@@ -58,6 +59,10 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
   private fun stopBeacon(result: MethodChannel.Result) {
     beacon.stop()
     result.success(null)
+  }
+
+  private fun isTransmissionSupported(result: MethodChannel.Result) {
+    result.success(beacon.isTransmissionSupported())
   }
 
   override fun onListen(event: Any?, eventSink: EventChannel.EventSink) {
