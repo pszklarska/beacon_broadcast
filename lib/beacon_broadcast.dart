@@ -107,7 +107,7 @@ class BeaconBroadcast {
         _uuid.isEmpty ||
         _majorId == null ||
         _minorId == null) {
-      throw new Exception(
+      throw new IllegalArgumentException(
           "Illegal arguments! UUID, majorId and minorId must not be null or empty: "
           "UUID: $_uuid, majorId: $_majorId, minorId: $_minorId");
     }
@@ -139,5 +139,15 @@ class BeaconBroadcast {
   /// Returns `true` if beacon is advertising. See also: [isAdvertising()]
   Stream<bool> getAdvertisingStateChange() {
     return _eventChannel.receiveBroadcastStream().cast<bool>();
+  }
+}
+
+class IllegalArgumentException implements Exception {
+  final message;
+
+  IllegalArgumentException(this.message);
+
+  String toString() {
+    return "IllegalArgumentException: $message";
   }
 }
