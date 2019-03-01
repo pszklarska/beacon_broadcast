@@ -103,7 +103,10 @@ class BeaconBroadcast {
   /// continue running in the foreground to broadcast the needed Bluetooth signals. If the user
   /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
-    if (_uuid == null || _uuid.isEmpty || _majorId == null || _minorId == null) {
+    if (_uuid == null ||
+        _uuid.isEmpty ||
+        _majorId == null ||
+        _minorId == null) {
       throw new IllegalArgumentException(
           "Illegal arguments! UUID, majorId and minorId must not be null or empty: "
           "UUID: $_uuid, majorId: $_majorId, minorId: $_minorId");
@@ -138,7 +141,6 @@ class BeaconBroadcast {
     return _eventChannel.receiveBroadcastStream().cast<bool>();
   }
 
-
   /// Checks if device supports transmission. For iOS it returns always true.
   ///
   /// Possible values (for Android):
@@ -148,7 +150,8 @@ class BeaconBroadcast {
   /// * [BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER] device does not have a compatible chipset
   /// or driver
   Future<BeaconStatus> checkTransmissionSupported() async {
-    var isTransmissionSupported = await _methodChannel.invokeMethod('isTransmissionSupported');
+    var isTransmissionSupported =
+        await _methodChannel.invokeMethod('isTransmissionSupported');
     return fromInt(isTransmissionSupported);
   }
 }
