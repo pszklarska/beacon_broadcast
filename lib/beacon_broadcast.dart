@@ -145,7 +145,7 @@ class BeaconBroadcast {
   ///
   /// Possible values (for Android):
   /// * [BeaconStatus.SUPPORTED] device supports transmission
-  /// * [BeaconStatus.NOT_SUPPORTED_MIN_SDK] min sdk of app is lower than 21
+  /// * [BeaconStatus.NOT_SUPPORTED_MIN_SDK] Android system version on the device is lower than 21
   /// * [BeaconStatus.NOT_SUPPORTED_BLE] BLE is not supported on this device
   /// * [BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER] device does not have a compatible chipset
   /// or driver
@@ -167,9 +167,16 @@ class IllegalArgumentException implements Exception {
 }
 
 enum BeaconStatus {
+  /// Device supports transmitting as a beacon
   SUPPORTED,
+
+  /// Android system version on the device is too low (min. is 21)
   NOT_SUPPORTED_MIN_SDK,
+
+  /// Device doesn't support Bluetooth Low Energy
   NOT_SUPPORTED_BLE,
+
+  /// Device's Bluetooth chipset or driver doesn't support transmitting
   NOT_SUPPORTED_CANNOT_GET_ADVERTISER
 }
 

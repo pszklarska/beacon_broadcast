@@ -41,6 +41,28 @@ beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
 });
 ```
 
+Before advertising, you may want to check if your device supports transmitting as a beacon. You may do it using 
+`checkTransmissionSupported()` method.
+
+
+``` dart
+var transmissionSupportStatus = await beaconBroadcast.checkTransmissionSupported();
+switch (transmissionSupportStatus) {
+  case BeaconStatus.SUPPORTED:
+    // You're good to go, you can advertise as a beacon
+    break;
+  case BeaconStatus.NOT_SUPPORTED_MIN_SDK:
+    // Your Android system version is too low (min. is 21)
+    break;
+  case BeaconStatus.NOT_SUPPORTED_BLE:
+    // Your device doesn't support BLE
+    break;
+  case BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER:
+    // Either your chipset or driver is incompatible
+    break;
+}
+```
+
 If you want to stop advertising, just call `stop()`:
 
 ``` dart
@@ -77,4 +99,4 @@ for iOS.
 There are still few things left to implement:
 - [X] Adding option for checking for Android device support programmatically
 - [ ] Adding option to set layout and manufacturer for Android implementation
-- [ ] Handle turning on BLE and granting location permission on Android
+- [ ] Handle turning on BLE before transmitting

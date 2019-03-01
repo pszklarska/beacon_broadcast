@@ -1,3 +1,8 @@
+## 0.1.2
+
+Updates in the documentation
+
+
 ## 0.1.1
 
 Adding method for checking if transmission is supported on the device.
