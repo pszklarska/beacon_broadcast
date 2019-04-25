@@ -1,6 +1,7 @@
 # Beacon Broadcast plugin for Flutter
 
-<a href="https://github.com/Solido/awesome-flutter"><img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square"/></a> ![Pub](https://img.shields.io/pub/v/beacon_broadcast.svg)
+<a href="https://github.com/Solido/awesome-flutter"><img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square"/></a> [![Pub](https://img.shields.io/pub/v/beacon_broadcast.svg)](https://pub.dartlang.org/packages/beacon_broadcast)
+
 
 A Flutter plugin for turning your device into a beacon.
 
