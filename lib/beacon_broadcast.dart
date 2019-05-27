@@ -130,35 +130,6 @@ class BeaconBroadcast {
     return this;
   }
 
-  /// Sets beacon layout.
-  ///
-  /// This parameter is **Android only**. It's optional, the default is [ALTBEACON_LAYOUT].
-  /// You can use one of the options:
-  /// <ul>
-  /// <li>[ALTBEACON_LAYOUT]
-  /// <li>[EDDYSTONE_TLM_LAYOUT]
-  /// <li>[EDDYSTONE_UID_LAYOUT]
-  /// <li>[EDDYSTONE_URL_LAYOUT]
-  /// <li>[URI_BEACON_LAYOUT]
-  /// </ul>
-  ///
-  /// **For iOS**, layout will be always iBeacon.
-  BeaconBroadcast setLayout(String layout) {
-    _layout = layout;
-    return this;
-  }
-
-  /// Sets manufacturer id.
-  ///
-  /// This parameter is **Android only**. It's optional, the default is Radius Network.
-  /// For more information you can check the full list of [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/).
-  ///
-  /// **For iOS**, the manufacturer will be always Apple.
-  BeaconBroadcast setManufacturerId(int manufacturerId) {
-    _manufacturerId = manufacturerId;
-    return this;
-  }
-
   /// Starts beacon advertising.
   ///
   /// Before starting you must set  [_uuid].
