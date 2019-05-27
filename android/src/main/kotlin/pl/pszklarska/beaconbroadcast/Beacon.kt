@@ -9,7 +9,6 @@ import org.altbeacon.beacon.BeaconTransmitter
 import org.altbeacon.beacon.BeaconTransmitter.checkTransmissionSupported
 import java.util.*
 
-const val ALT_BEACON_LAYOUT = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
 const val RADIUS_NETWORK_MANUFACTURER = 0x0118
 
 class Beacon {
@@ -20,24 +19,25 @@ class Beacon {
 
   fun init(context: Context) {
     this.context = context
-
-    if (isTransmissionSupported() == 0) {
-      val beaconParser = BeaconParser().setBeaconLayout(ALT_BEACON_LAYOUT)
-      beaconTransmitter = BeaconTransmitter(context, beaconParser)
-    }
   }
 
   fun start(beaconData: BeaconData, advertiseCallback: ((Boolean) -> Unit)) {
     this.advertiseCallback = advertiseCallback
 
+    if (isTransmissionSupported() == 0) {
+      val beaconParser = BeaconParser().setBeaconLayout(beaconData.layout ?: BeaconParser.ALTBEACON_LAYOUT)
+      beaconTransmitter = BeaconTransmitter(context, beaconParser)
+    }
+
     val beacon = Beacon.Builder()
         .setId1(beaconData.uuid)
         .setId2(beaconData.majorId.toString())
         .setId3(beaconData.minorId.toString())
-        .setManufacturer(RADIUS_NETWORK_MANUFACTURER)
         .setTxPower(beaconData.transmissionPower ?: -59)
         .setDataFields(Arrays.asList(0L))
+        .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
         .build()
+
 
     beaconTransmitter?.startAdvertising(beacon, object : AdvertiseCallback() {
       override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {

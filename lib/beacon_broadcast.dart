@@ -23,11 +23,22 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class BeaconBroadcast {
+  static const String ALTBEACON_LAYOUT =
+      'm:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25';
+  static const String EDDYSTONE_TLM_LAYOUT =
+      'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
+  static const String EDDYSTONE_UID_LAYOUT =
+      's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
+  static const String EDDYSTONE_URL_LAYOUT = 's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
+  static const String URI_BEACON_LAYOUT = 's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
+
   String _uuid;
   int _majorId;
   int _minorId;
   int _transmissionPower;
   String _identifier = "";
+  String _layout;
+  int _manufacturerId;
 
   static const MethodChannel _methodChannel =
       const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
@@ -39,7 +50,7 @@ class BeaconBroadcast {
   ///
   /// [uuid] is random string identifier, e.g. "2f234454-cf6d-4a0f-adf2-f4911ba9ffa6"
   ///
-  /// This parameter is required
+  /// This parameter is required for the default layout
   BeaconBroadcast setUUID(String uuid) {
     _uuid = uuid;
     return this;
@@ -49,7 +60,7 @@ class BeaconBroadcast {
   ///
   /// [majorId] is integer identifier with range between 1 and 65535
   ///
-  /// This parameter is required
+  /// This parameter is required for the default layout
   BeaconBroadcast setMajorId(int majorId) {
     _majorId = majorId;
     return this;
@@ -59,7 +70,7 @@ class BeaconBroadcast {
   ///
   /// [minorId] is integer identifier with range between 1 and 65535
   ///
-  /// This parameter is required
+  /// This parameter is required for the default layout
   BeaconBroadcast setMinorId(int minorId) {
     _minorId = minorId;
     return this;
@@ -90,12 +101,71 @@ class BeaconBroadcast {
     return this;
   }
 
+  /// Sets beacon layout.
+  ///
+  /// This parameter is **Android only**. It's optional, the default is [ALTBEACON_LAYOUT].
+  /// You can use one of the options:
+  /// <ul>
+  /// <li>[ALTBEACON_LAYOUT]
+  /// <li>[EDDYSTONE_TLM_LAYOUT]
+  /// <li>[EDDYSTONE_UID_LAYOUT]
+  /// <li>[EDDYSTONE_URL_LAYOUT]
+  /// <li>[URI_BEACON_LAYOUT]
+  /// </ul>
+  ///
+  /// **For iOS**, layout will be always iBeacon.
+  BeaconBroadcast setLayout(String layout) {
+    _layout = layout;
+    return this;
+  }
+
+  /// Sets manufacturer id.
+  ///
+  /// This parameter is **Android only**. It's optional, the default is Radius Network.
+  /// For more information you can check the full list of [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/).
+  ///
+  /// **For iOS**, the manufacturer will be always Apple.
+  BeaconBroadcast setManufacturerId(int manufacturerId) {
+    _manufacturerId = manufacturerId;
+    return this;
+  }
+
+  /// Sets beacon layout.
+  ///
+  /// This parameter is **Android only**. It's optional, the default is [ALTBEACON_LAYOUT].
+  /// You can use one of the options:
+  /// <ul>
+  /// <li>[ALTBEACON_LAYOUT]
+  /// <li>[EDDYSTONE_TLM_LAYOUT]
+  /// <li>[EDDYSTONE_UID_LAYOUT]
+  /// <li>[EDDYSTONE_URL_LAYOUT]
+  /// <li>[URI_BEACON_LAYOUT]
+  /// </ul>
+  ///
+  /// **For iOS**, layout will be always iBeacon.
+  BeaconBroadcast setLayout(String layout) {
+    _layout = layout;
+    return this;
+  }
+
+  /// Sets manufacturer id.
+  ///
+  /// This parameter is **Android only**. It's optional, the default is Radius Network.
+  /// For more information you can check the full list of [Company Identifiers](https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/).
+  ///
+  /// **For iOS**, the manufacturer will be always Apple.
+  BeaconBroadcast setManufacturerId(int manufacturerId) {
+    _manufacturerId = manufacturerId;
+    return this;
+  }
+
   /// Starts beacon advertising.
   ///
-  /// Before starting you can set parameters such as [_uuid], [_majorId], [_minorId], [_identifier], [_transmissionPower].
-  /// Parameters [_uuid], [_majorId], [_minorId] are required.
+  /// Before starting you must set  [_uuid].
+  /// For the default layout, parameters [_majorId], [_minorId] are also required.
+  /// Other parameters as [_identifier], [_transmissionPower], [_layout], [_manufacturerId] are optional.
   ///
-  /// For Android, beacon layout is set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
+  /// For Android, beacon layout is by default set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
   /// On Android system, it's required to have Bluetooth turn on and to give app permission to location.
   ///
   /// For iOS, beacon is broadcasting as an iBeacon (check more details here: [Turning an iOS Device into an iBeacon](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon))
@@ -103,13 +173,16 @@ class BeaconBroadcast {
   /// continue running in the foreground to broadcast the needed Bluetooth signals. If the user
   /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
-    if (_uuid == null ||
-        _uuid.isEmpty ||
-        _majorId == null ||
-        _minorId == null) {
+    if (_uuid == null || _uuid.isEmpty) {
       throw new IllegalArgumentException(
-          "Illegal arguments! UUID, majorId and minorId must not be null or empty: "
-          "UUID: $_uuid, majorId: $_majorId, minorId: $_minorId");
+          "Illegal arguments! UUID must not be null or empty: UUID: $_uuid");
+    }
+
+    if ((_layout == null || _layout == ALTBEACON_LAYOUT) &&
+        (_majorId == null || _minorId == null)) {
+      throw new IllegalArgumentException(
+          "Illegal arguments! MajorId and minorId must not be null or empty: "
+          "majorId: $_majorId, minorId: $_minorId");
     }
 
     Map params = <String, dynamic>{
@@ -118,6 +191,8 @@ class BeaconBroadcast {
       "minorId": _minorId,
       "transmissionPower": _transmissionPower,
       "identifier": _identifier,
+      "layout": _layout,
+      "manufacturerId": _manufacturerId,
     };
 
     await _methodChannel.invokeMethod('start', params);
