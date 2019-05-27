@@ -1,3 +1,7 @@
+## 0.2.1
+
+Updated the documentation
+
 ## 0.2.0
 
 Added option to set manufacturer and layout for Android. 
