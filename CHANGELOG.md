@@ -1,3 +1,8 @@
+## 0.2.0
+
+Added option to set manufacturer and layout for Android. 
+
+
 ## 0.1.2
 
 Updates in the documentation
@@ -5,7 +10,7 @@ Updates in the documentation
 
 ## 0.1.1
 
-Adding method for checking if transmission is supported on the device.
+Added method for checking if transmission is supported on the device.
 
 
 ## 0.1.0

@@ -16,6 +16,8 @@ class _MyAppState extends State<MyApp> {
   static const MINOR_ID = 100;
   static const TRANSMISSION_POWER = -59;
   static const IDENTIFIER = 'com.example.myDeviceRegion';
+  static const LAYOUT = BeaconBroadcast.ALTBEACON_LAYOUT;
+  static const MANUFACTURER_ID = 0x0118;
 
   BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 
@@ -55,8 +57,10 @@ class _MyAppState extends State<MyApp> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Is transmission supported?', style: Theme.of(context).textTheme.headline),
-                Text('$_isTransmissionSupported', style: Theme.of(context).textTheme.subhead),
+                Text('Is transmission supported?',
+                    style: Theme.of(context).textTheme.headline),
+                Text('$_isTransmissionSupported',
+                    style: Theme.of(context).textTheme.subhead),
                 Container(height: 16.0),
                 Text('Is beacon started?', style: Theme.of(context).textTheme.headline),
                 Text('$_isAdvertising', style: Theme.of(context).textTheme.subhead),
@@ -70,6 +74,8 @@ class _MyAppState extends State<MyApp> {
                           .setMinorId(MINOR_ID)
                           .setTransmissionPower(-59)
                           .setIdentifier(IDENTIFIER)
+                          .setLayout(LAYOUT)
+                          .setManufacturerId(MANUFACTURER_ID)
                           .start();
                     },
                     child: Text('START'),
@@ -89,6 +95,8 @@ class _MyAppState extends State<MyApp> {
                 Text('Minor id: $MINOR_ID'),
                 Text('Tx Power: $TRANSMISSION_POWER'),
                 Text('Identifier: $IDENTIFIER'),
+                Text('Layout: $LAYOUT'),
+                Text('Manufacturer Id: $MANUFACTURER_ID'),
               ],
             ),
           ),

@@ -70,6 +70,42 @@ void main() {
           throwsA(const TypeMatcher<IllegalArgumentException>()));
     });
 
+    test('not passing minor id when different layout is set returns normally', () async {
+      expect(
+              () => beaconBroadcast
+              .setUUID("uuid")
+              .setMajorId(1)
+              .setTransmissionPower(-59)
+              .setIdentifier("identifier")
+              .setLayout("layout")
+              .start(),
+          returnsNormally);
+    });
+
+    test('not passing major id when different layout is set returns normally', () async {
+      expect(
+              () => beaconBroadcast
+              .setUUID("uuid")
+              .setMinorId(1)
+              .setTransmissionPower(-59)
+              .setIdentifier("identifier")
+              .setLayout("layout")
+              .start(),
+          returnsNormally);
+    });
+
+    test('not passing UUID when different layout is set throws exception', () async {
+      expect(
+              () => beaconBroadcast
+              .setMinorId(1)
+              .setTransmissionPower(-59)
+              .setIdentifier("identifier")
+              .setLayout("layout")
+              .start(),
+          throwsA(const TypeMatcher<IllegalArgumentException>()));
+    });
+
+
     test('not passing identifier and tansmission power starts normally', () async {
       expect(() => beaconBroadcast.setUUID("uuid").setMajorId(1).setMinorId(1).start(),
           returnsNormally);

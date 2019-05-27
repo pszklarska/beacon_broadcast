@@ -19,7 +19,16 @@ Now you can create BeaconBroadcast object and start using it:
 BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 ```
 
-To start advertising, just set parameters and call `start()`
+In the simplest case, to start advertising just set UUID, major and minor id and call `start()`:
+``` dart
+beaconBroadcast
+    .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
+    .setMajorId(1)
+    .setMinorId(100)
+    .start();
+```
+
+You can also customize your beacon before starting:
 ``` dart
 beaconBroadcast
     .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
@@ -27,6 +36,8 @@ beaconBroadcast
     .setMinorId(100)
     .setTransmissionPower(-59) //optional
     .setIdentifier("com.example.myDeviceRegion") //iOS-only, optional
+    .setLayout(s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v) //Android-only, optional
+    .setManufacturerId(0x001D) //Android-only, optional
     .start();
 ```
 
@@ -76,11 +87,11 @@ beaconBroadcast.stop();
 
 **Important note**: For Android app, user needs to turn on Bluetooth on the device first. 
 
-Android beacon will advertise as AltBeacon manufactured by RadiusNetwork. In current library version it 
-can't be changed.
+Android beacon will advertise as the AltBeacon manufactured by RadiusNetwork. You can change it with `setLayout()` 
+and `setManufacturerId()` methods.
 
 #### iOS
-For iOS, it's worth to mention that application needs to work in foreground. According to the 
+For iOS, beacon will advertise as an iBeacon, it can't be changed. It's worth to mention that application needs to work in foreground. According to the 
 [CoreLocation](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon) 
 documentation:
 
@@ -90,7 +101,6 @@ documentation:
 > Bluetooth signals. If the user quits the app, the system stops advertising the device as a peripheral over Bluetooth.
 
 
-iOS beacon will advertise as iBeacon. 
 ### About
 
 This plugin uses [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html) 
@@ -101,5 +111,5 @@ for iOS.
 
 There are still few things left to implement:
 - [X] Adding option for checking for Android device support programmatically
-- [ ] Adding option to set layout and manufacturer for Android implementation
+- [X] Adding option to set layout and manufacturer for Android implementation
 - [ ] Handle turning on BLE before transmitting
