@@ -19,7 +19,7 @@ Now you can create BeaconBroadcast object and start using it:
 BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 ```
 
-In the simplest case, to start advertising just set UUID, major and minor id and call `start()`:
+In the simplest case, to start advertising just set your UUID, major and minor id and call `start()`:
 ``` dart
 beaconBroadcast
     .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
@@ -81,6 +81,28 @@ If you want to stop advertising, just call `stop()`:
 
 ``` dart
 beaconBroadcast.stop();
+```
+
+### Examples
+
+To broadcast as AltBeacon:
+``` dart
+beaconBroadcast
+    .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2') //change UUID to yours
+    .setMajorId(1) //change major id to yours
+    .setMinorId(100) //change minor id to yours
+    .start();
+```
+
+To broadcast as iBeacon:
+``` dart
+beaconBroadcast
+    .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2') //change UUID to yours
+    .setMajorId(1) //change major id to yours
+    .setMinorId(100) //change minor id to yours
+    .setLayout('m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24')
+    .setManufacturerId(0x004c)
+    .start();
 ```
 
 #### Android
