@@ -11,13 +11,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const UUID = '39ED98FF-2900-441A-802F-9C398FC199D2';
-  static const MAJOR_ID = 1;
-  static const MINOR_ID = 100;
-  static const TRANSMISSION_POWER = -59;
-  static const IDENTIFIER = 'com.example.myDeviceRegion';
-  static const LAYOUT = BeaconBroadcast.ALTBEACON_LAYOUT;
-  static const MANUFACTURER_ID = 0x0118;
+  static const String uuid = '39ED98FF-2900-441A-802F-9C398FC199D2';
+  static const int majorId = 1;
+  static const int minorId = 100;
+  static const int transmissionPower = -59;
+  static const String identifier = 'com.example.myDeviceRegion';
+  static const String layout = BeaconBroadcast.ALTBEACON_LAYOUT;
+  static const int manufacturerId = 0x0118;
+  static const List<int> extraData = [100];
 
   BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 
@@ -28,7 +29,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    beaconBroadcast.checkTransmissionSupported().then((isTransmissionSupported) {
+    beaconBroadcast
+        .checkTransmissionSupported()
+        .then((isTransmissionSupported) {
       setState(() {
         _isTransmissionSupported = isTransmissionSupported;
       });
@@ -62,20 +65,23 @@ class _MyAppState extends State<MyApp> {
                 Text('$_isTransmissionSupported',
                     style: Theme.of(context).textTheme.subhead),
                 Container(height: 16.0),
-                Text('Is beacon started?', style: Theme.of(context).textTheme.headline),
-                Text('$_isAdvertising', style: Theme.of(context).textTheme.subhead),
+                Text('Is beacon started?',
+                    style: Theme.of(context).textTheme.headline),
+                Text('$_isAdvertising',
+                    style: Theme.of(context).textTheme.subhead),
                 Container(height: 16.0),
                 Center(
                   child: RaisedButton(
                     onPressed: () {
                       beaconBroadcast
-                          .setUUID(UUID)
-                          .setMajorId(MAJOR_ID)
-                          .setMinorId(MINOR_ID)
-                          .setTransmissionPower(-59)
-                          .setIdentifier(IDENTIFIER)
-                          .setLayout(LAYOUT)
-                          .setManufacturerId(MANUFACTURER_ID)
+                          .setUUID(uuid)
+                          .setMajorId(majorId)
+                          .setMinorId(minorId)
+                          .setTransmissionPower(transmissionPower)
+                          .setIdentifier(identifier)
+                          .setLayout(layout)
+                          .setManufacturerId(manufacturerId)
+                          .setExtraData(extraData)
                           .start();
                     },
                     child: Text('START'),
@@ -89,14 +95,16 @@ class _MyAppState extends State<MyApp> {
                     child: Text('STOP'),
                   ),
                 ),
-                Text('Beacon Data', style: Theme.of(context).textTheme.headline),
-                Text('UUID: $UUID'),
-                Text('Major id: $MAJOR_ID'),
-                Text('Minor id: $MINOR_ID'),
-                Text('Tx Power: $TRANSMISSION_POWER'),
-                Text('Identifier: $IDENTIFIER'),
-                Text('Layout: $LAYOUT'),
-                Text('Manufacturer Id: $MANUFACTURER_ID'),
+                Text('Beacon Data',
+                    style: Theme.of(context).textTheme.headline),
+                Text('UUID: $uuid'),
+                Text('Major id: $majorId'),
+                Text('Minor id: $minorId'),
+                Text('Tx Power: $transmissionPower'),
+                Text('Identifier: $identifier'),
+                Text('Layout: $layout'),
+                Text('Manufacturer Id: $manufacturerId'),
+                Text('Extra data: $extraData'),
               ],
             ),
           ),

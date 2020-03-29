@@ -7,7 +7,6 @@ import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 import org.altbeacon.beacon.BeaconTransmitter.checkTransmissionSupported
-import java.util.*
 
 const val RADIUS_NETWORK_MANUFACTURER = 0x0118
 
@@ -25,7 +24,8 @@ class Beacon {
     this.advertiseCallback = advertiseCallback
 
     if (isTransmissionSupported() == 0) {
-      val beaconParser = BeaconParser().setBeaconLayout(beaconData.layout ?: BeaconParser.ALTBEACON_LAYOUT)
+      val beaconParser = BeaconParser().setBeaconLayout(beaconData.layout
+          ?: BeaconParser.ALTBEACON_LAYOUT)
       beaconTransmitter = BeaconTransmitter(context, beaconParser)
     }
 
@@ -34,7 +34,7 @@ class Beacon {
         .setId2(beaconData.majorId.toString())
         .setId3(beaconData.minorId.toString())
         .setTxPower(beaconData.transmissionPower ?: -59)
-        .setDataFields(Arrays.asList(0L))
+        .setDataFields(beaconData.extraData ?: listOf(0L))
         .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
         .build()
 

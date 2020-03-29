@@ -29,8 +29,10 @@ class BeaconBroadcast {
       'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
   static const String EDDYSTONE_UID_LAYOUT =
       's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
-  static const String EDDYSTONE_URL_LAYOUT = 's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
-  static const String URI_BEACON_LAYOUT = 's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
+  static const String EDDYSTONE_URL_LAYOUT =
+      's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
+  static const String URI_BEACON_LAYOUT =
+      's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
 
   String _uuid;
   int _majorId;
@@ -39,6 +41,7 @@ class BeaconBroadcast {
   String _identifier = "";
   String _layout;
   int _manufacturerId;
+  List<int> _extraData;
 
   static const MethodChannel _methodChannel =
       const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
@@ -130,6 +133,28 @@ class BeaconBroadcast {
     return this;
   }
 
+  /// Sets extra data.
+  ///
+  /// This parameter is **Android only**. If beacon layout allows it, you can
+  /// add extra bytes to the data transmitted by the beacon.
+  /// Value must be within a range 0-255.
+  ///
+  /// For more information check section
+  /// [Adding extra data](https://github.com/pszklarska/beacon_broadcast#adding-extra-data)
+  /// in the documentation.
+  ///
+  /// **For iOS**, beacon layout doesn't allow to transmit any extra data.
+  ///
+  /// This parameter is optional.
+  BeaconBroadcast setExtraData(List<int> extraData) {
+    if (extraData.any((value) => value < 0 || value > 255)) {
+      throw new IllegalArgumentException(
+          "Illegal arguments! Extra data values must be within a byte range 0-255");
+    }
+    _extraData = extraData;
+    return this;
+  }
+
   /// Starts beacon advertising.
   ///
   /// Before starting you must set  [_uuid].
@@ -164,6 +189,7 @@ class BeaconBroadcast {
       "identifier": _identifier,
       "layout": _layout,
       "manufacturerId": _manufacturerId,
+      "extraData": _extraData,
     };
 
     await _methodChannel.invokeMethod('start', params);
