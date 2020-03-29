@@ -15,6 +15,8 @@ import 'package:beacon_broadcast/beacon_broadcast.dart';
 
 Now you can create BeaconBroadcast object and start using it:
 
+**Important note**: For Android app, user needs to turn on Bluetooth on the device first.
+
 ``` dart
 BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 ```
@@ -105,15 +107,30 @@ beaconBroadcast
     .start();
 ```
 
-#### Android
+Full example can be found [in the examples folder](example/lib/main.dart).
 
-**Important note**: For Android app, user needs to turn on Bluetooth on the device first. 
+### Beacon manufacturers
+#### Android 
 
 Android beacon will advertise as the AltBeacon manufactured by RadiusNetwork. You can change it with `setLayout()` 
 and `setManufacturerId()` methods.
 
 #### iOS
-For iOS, beacon will advertise as an iBeacon, it can't be changed. It's worth to mention that application needs to work in foreground. According to the 
+For iOS, beacon will advertise as an iBeacon, it can't be changed. 
+
+### Transmitting in the background
+
+#### Android
+
+Due to background execution limits [introduced in Android 8](https://developer.android.com/about/versions/oreo/background) 
+beacons transmission in the background is limited. Based on the 
+[AltBeacon documentation](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html) 
+it's around 10 minutes, after that time transmission will stop. 
+Current version of plugin doesn't support Foreground Services to exceed this limitation.
+
+#### iOS
+
+For iOS, application doesn't work in the background. According to the 
 [CoreLocation](https://developer.apple.com/documentation/corelocation/turning_an_ios_device_into_an_ibeacon) 
 documentation:
 
@@ -121,7 +138,6 @@ documentation:
 > 
 > After advertising your app as a beacon, your app must continue running in the foreground to broadcast the needed 
 > Bluetooth signals. If the user quits the app, the system stops advertising the device as a peripheral over Bluetooth.
-
 
 ### About
 
@@ -135,3 +151,4 @@ There are still few things left to implement:
 - [X] Adding option for checking for Android device support programmatically
 - [X] Adding option to set layout and manufacturer for Android implementation
 - [ ] Handle turning on BLE before transmitting
+- [ ] Add Foreground Service to exceed background limitations on Android 8+
