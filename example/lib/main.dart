@@ -58,12 +58,12 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Is transmission supported?',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
                 Text('$_isTransmissionSupported',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
-                Text('Is beacon started?', style: Theme.of(context).textTheme.headline),
-                Text('$_isAdvertising', style: Theme.of(context).textTheme.subhead),
+                Text('Is beacon started?', style: Theme.of(context).textTheme.headline5),
+                Text('$_isAdvertising', style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
                   child: RaisedButton(
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
                     child: Text('STOP'),
                   ),
                 ),
-                Text('Beacon Data', style: Theme.of(context).textTheme.headline),
+                Text('Beacon Data', style: Theme.of(context).textTheme.headline5),
                 Text('UUID: $UUID'),
                 Text('Major id: $MAJOR_ID'),
                 Text('Minor id: $MINOR_ID'),
