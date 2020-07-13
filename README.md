@@ -128,7 +128,7 @@ To remedy this, add the following lines to your Info.plist
 <key>NSBluetoothAlwaysUsageDescription</key>
 <string>(Reason bluetooth is used)</string>
 ```
-To make it backwards compatible with previos IOS versions, add these additional lines to your Info.plist
+To make it backwards compatible with previous IOS versions, add these additional lines to your Info.plist
 ``` xml
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>(Reason bluetooth is used)</string>
