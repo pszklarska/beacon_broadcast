@@ -121,7 +121,12 @@ documentation:
 > 
 > After advertising your app as a beacon, your app must continue running in the foreground to broadcast the needed 
 > Bluetooth signals. If the user quits the app, the system stops advertising the device as a peripheral over Bluetooth.
-
+> Since IOS 13, a privacy usage description is required to use Bluetooth. Otherwise, the app will experience a runtime crash.
+> To remedy this, add the following lines to your Info.plist
+``` .plist
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>(Reason bluetooth is used)</string>
+```
 
 ### About
 
