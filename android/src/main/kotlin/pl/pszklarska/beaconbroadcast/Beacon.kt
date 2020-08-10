@@ -38,6 +38,7 @@ class Beacon {
         .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
         .build()
 
+    beaconTransmitter?.setAdvertiseMode(2)
 
     beaconTransmitter?.startAdvertising(beacon, object : AdvertiseCallback() {
       override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
