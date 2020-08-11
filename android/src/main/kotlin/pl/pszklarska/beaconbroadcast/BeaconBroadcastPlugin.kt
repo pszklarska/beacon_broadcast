@@ -83,7 +83,7 @@ data class BeaconData(
     val majorId: Int,
     val minorId: Int,
     val transmissionPower: Int?,
+    val advertiseMode: Int?,
     val layout: String?,
-    val manufacturerId: Int?,
-    val advertiseMode: Int?
+    val manufacturerId: Int?    
 )
