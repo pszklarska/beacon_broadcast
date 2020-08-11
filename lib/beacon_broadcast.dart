@@ -29,13 +29,16 @@ class BeaconBroadcast {
       'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
   static const String EDDYSTONE_UID_LAYOUT =
       's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
-  static const String EDDYSTONE_URL_LAYOUT = 's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
-  static const String URI_BEACON_LAYOUT = 's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
+  static const String EDDYSTONE_URL_LAYOUT =
+      's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
+  static const String URI_BEACON_LAYOUT =
+      's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
 
   String _uuid;
   int _majorId;
   int _minorId;
   int _transmissionPower;
+  int _advertiseMode;
   String _identifier = "";
   String _layout;
   int _manufacturerId;
@@ -101,6 +104,22 @@ class BeaconBroadcast {
     return this;
   }
 
+  /// Sets advertise mode for beacon.
+  ///
+  /// Advertise mode determines advertising frequency and power consumption.
+  ///
+  /// This parameter is optional, if not set, the default value for Android will be 1 (ADVERTISE_MODE_BALANCED).
+  /// You can use one of the options:
+  /// <ul>
+  /// <li>ADVERTISE_MODE_BALANCED - [1]
+  /// <li>ADVERTISE_MODE_LOW_LATENCY - [2]
+  /// <li>ADVERTISE_MODE_LOW_POWER - [0]
+  /// </ul>
+  BeaconBroadcast setAdvertiseMode(int advertiseMode) {
+    _advertiseMode = advertiseMode;
+    return this;
+  }
+
   /// Sets beacon layout.
   ///
   /// This parameter is **Android only**. It's optional, the default is [ALTBEACON_LAYOUT].
@@ -161,6 +180,7 @@ class BeaconBroadcast {
       "majorId": _majorId,
       "minorId": _minorId,
       "transmissionPower": _transmissionPower,
+      "advertiseMode": _advertiseMode,
       "identifier": _identifier,
       "layout": _layout,
       "manufacturerId": _manufacturerId,
