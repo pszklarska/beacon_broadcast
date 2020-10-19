@@ -29,10 +29,8 @@ class BeaconBroadcast {
       'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
   static const String EDDYSTONE_UID_LAYOUT =
       's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
-  static const String EDDYSTONE_URL_LAYOUT =
-      's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
-  static const String URI_BEACON_LAYOUT =
-      's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
+  static const String EDDYSTONE_URL_LAYOUT = 's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
+  static const String URI_BEACON_LAYOUT = 's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
 
   String _uuid;
   int _majorId;

@@ -26,7 +26,7 @@ class Beacon {
 
     if (isTransmissionSupported() == 0) {
       val beaconParser = BeaconParser().setBeaconLayout(beaconData.layout ?: BeaconParser.ALTBEACON_LAYOUT)
-      beaconTransmitter = BeaconTransmitter(context, beaconParser)      
+      beaconTransmitter = BeaconTransmitter(context, beaconParser)
     }
 
     val advMode = beaconData.advertiseMode ?: 1
