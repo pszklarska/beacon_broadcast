@@ -15,7 +15,8 @@ class _MyAppState extends State<MyApp> {
   static const MAJOR_ID = 1;
   static const MINOR_ID = 100;
   static const TRANSMISSION_POWER = -59;
-  static const ADVERTISE_MODE = 0;
+  // static const ADVERTISE_MODE = 0;
+  static const ADVERTISE_MODE = AdvertiseMode.LOW_POWER;
   static const IDENTIFIER = 'com.example.myDeviceRegion';
   static const LAYOUT = BeaconBroadcast.ALTBEACON_LAYOUT;
   static const MANUFACTURER_ID = 0x0118;
@@ -29,9 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    beaconBroadcast
-        .checkTransmissionSupported()
-        .then((isTransmissionSupported) {
+    beaconBroadcast.checkTransmissionSupported().then((isTransmissionSupported) {
       setState(() {
         _isTransmissionSupported = isTransmissionSupported;
       });
@@ -65,10 +64,8 @@ class _MyAppState extends State<MyApp> {
                 Text('$_isTransmissionSupported',
                     style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
-                Text('Is beacon started?',
-                    style: Theme.of(context).textTheme.headline5),
-                Text('$_isAdvertising',
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text('Is beacon started?', style: Theme.of(context).textTheme.headline5),
+                Text('$_isAdvertising', style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
                   child: RaisedButton(
@@ -78,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                           .setMajorId(MAJOR_ID)
                           .setMinorId(MINOR_ID)
                           .setTransmissionPower(-59)
-                          .setAdvertiseMode(0)
+                          .setAdvertiseMode(ADVERTISE_MODE)
                           .setIdentifier(IDENTIFIER)
                           .setLayout(LAYOUT)
                           .setManufacturerId(MANUFACTURER_ID)
@@ -95,8 +92,7 @@ class _MyAppState extends State<MyApp> {
                     child: Text('STOP'),
                   ),
                 ),
-                Text('Beacon Data',
-                    style: Theme.of(context).textTheme.headline5),
+                Text('Beacon Data', style: Theme.of(context).textTheme.headline5),
                 Text('UUID: $UUID'),
                 Text('Major id: $MAJOR_ID'),
                 Text('Minor id: $MINOR_ID'),

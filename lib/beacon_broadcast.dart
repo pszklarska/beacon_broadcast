@@ -108,15 +108,15 @@ class BeaconBroadcast {
   ///
   /// Advertise mode determines advertising frequency and power consumption.
   ///
-  /// This parameter is optional, if not set, the default value for Android will be 1 (ADVERTISE_MODE_BALANCED).
+  /// This parameter is **Android only** (it has no effect on iOS). It is optional, if not set, the default value will be ADVERTISE_MODE_BALANCED.
   /// You can use one of the options:
   /// <ul>
-  /// <li>ADVERTISE_MODE_BALANCED - [1]
-  /// <li>ADVERTISE_MODE_LOW_LATENCY - [2]
-  /// <li>ADVERTISE_MODE_LOW_POWER - [0]
+  /// <li>[AdvertiseMode.LOW_POWER] Consumes less energy, but larger broadcast interval
+  /// <li>[AdvertiseMode.BALANCED] default: Balance between energy usage and broadcast interval
+  /// <li>[AdvertiseMode.LOW_LATENCY] Consumes more energy, but smaller broadcast interval
   /// </ul>
-  BeaconBroadcast setAdvertiseMode(int advertiseMode) {
-    _advertiseMode = advertiseMode;
+  BeaconBroadcast setAdvertiseMode(AdvertiseMode advertiseMode) {
+    _advertiseMode = getCorrespondingInt(advertiseMode);
     return this;
   }
 
@@ -153,7 +153,7 @@ class BeaconBroadcast {
   ///
   /// Before starting you must set  [_uuid].
   /// For the default layout, parameters [_majorId], [_minorId] are also required.
-  /// Other parameters as [_identifier], [_transmissionPower], [_layout], [_manufacturerId] are optional.
+  /// Other parameters as [_identifier], [_transmissionPower], [_advertiseMode], [_layout], [_manufacturerId] are optional.
   ///
   /// For Android, beacon layout is by default set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
   /// On Android system, it's required to have Bluetooth turn on and to give app permission to location.
@@ -256,5 +256,29 @@ BeaconStatus fromInt(int value) {
       return BeaconStatus.NOT_SUPPORTED_BLE;
     default:
       return BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER;
+  }
+}
+
+enum AdvertiseMode {
+  /// Consumes less energy, but larger broadcast interval
+  LOW_POWER,
+
+  /// Balance between energy usage and broadcast interval
+  BALANCED,
+
+  /// Consumes more energy, but smaller broadcast interval
+  LOW_LATENCY,
+}
+
+int getCorrespondingInt(AdvertiseMode advMode) {
+  switch (advMode) {
+    case AdvertiseMode.LOW_POWER:
+      return 0;
+    case AdvertiseMode.BALANCED:
+      return 1;
+    case AdvertiseMode.LOW_LATENCY:
+      return 2;
+    default:
+      return 1;
   }
 }

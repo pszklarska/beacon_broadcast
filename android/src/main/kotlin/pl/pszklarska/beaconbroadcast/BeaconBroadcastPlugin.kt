@@ -85,5 +85,5 @@ data class BeaconData(
     val transmissionPower: Int?,
     val advertiseMode: Int?,
     val layout: String?,
-    val manufacturerId: Int?    
+    val manufacturerId: Int?
 )
