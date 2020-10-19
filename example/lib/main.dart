@@ -29,9 +29,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    beaconBroadcast
-        .checkTransmissionSupported()
-        .then((isTransmissionSupported) {
+    beaconBroadcast.checkTransmissionSupported().then((isTransmissionSupported) {
       setState(() {
         _isTransmissionSupported = isTransmissionSupported;
       });
@@ -65,10 +63,8 @@ class _MyAppState extends State<MyApp> {
                 Text('$_isTransmissionSupported',
                     style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
-                Text('Is beacon started?',
-                    style: Theme.of(context).textTheme.headline5),
-                Text('$_isAdvertising',
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text('Is beacon started?', style: Theme.of(context).textTheme.headline5),
+                Text('$_isAdvertising', style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
                   child: RaisedButton(
@@ -78,7 +74,7 @@ class _MyAppState extends State<MyApp> {
                           .setMajorId(MAJOR_ID)
                           .setMinorId(MINOR_ID)
                           .setTransmissionPower(-59)
-                          .setAdvertiseMode(0)
+                          .setAdvertiseMode(ADVERTISE_MODE)
                           .setIdentifier(IDENTIFIER)
                           .setLayout(LAYOUT)
                           .setManufacturerId(MANUFACTURER_ID)
