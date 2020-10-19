@@ -151,7 +151,7 @@ class BeaconBroadcast {
   ///
   /// Before starting you must set  [_uuid].
   /// For the default layout, parameters [_majorId], [_minorId] are also required.
-  /// Other parameters as [_identifier], [_transmissionPower], [_layout], [_manufacturerId] are optional.
+  /// Other parameters as [_identifier], [_transmissionPower], [_advertiseMode], [_layout], [_manufacturerId] are optional.
   ///
   /// For Android, beacon layout is by default set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
   /// On Android system, it's required to have Bluetooth turn on and to give app permission to location.
