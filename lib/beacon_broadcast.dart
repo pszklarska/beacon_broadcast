@@ -261,22 +261,22 @@ BeaconStatus fromInt(int value) {
 
 enum AdvertiseMode {
   /// Consumes less energy, but larger broadcast interval
-  LOW_POWER,
+  lowPower,
 
   /// Balance between energy usage and broadcast interval
-  BALANCED,
+  balanced,
 
   /// Consumes more energy, but smaller broadcast interval
-  LOW_LATENCY,
+  lowLatency,
 }
 
 int getCorrespondingInt(AdvertiseMode advMode) {
   switch (advMode) {
-    case AdvertiseMode.LOW_POWER:
+    case AdvertiseMode.lowPower:
       return 0;
-    case AdvertiseMode.BALANCED:
+    case AdvertiseMode.balanced:
       return 1;
-    case AdvertiseMode.LOW_LATENCY:
+    case AdvertiseMode.lowLatency:
       return 2;
     default:
       return 1;

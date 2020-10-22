@@ -15,7 +15,7 @@ class _MyAppState extends State<MyApp> {
   static const MAJOR_ID = 1;
   static const MINOR_ID = 100;
   static const TRANSMISSION_POWER = -59;
-  static const ADVERTISE_MODE = AdvertiseMode.LOW_POWER;
+  static const ADVERTISE_MODE = AdvertiseMode.lowPower;
   static const IDENTIFIER = 'com.example.myDeviceRegion';
   static const LAYOUT = BeaconBroadcast.ALTBEACON_LAYOUT;
   static const MANUFACTURER_ID = 0x0118;
