@@ -279,6 +279,6 @@ int getCorrespondingInt(AdvertiseMode advMode) {
     case AdvertiseMode.lowLatency:
       return 2;
     default:
-      return 1;
+      return null;
   }
 }
