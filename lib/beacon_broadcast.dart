@@ -108,7 +108,7 @@ class BeaconBroadcast {
   ///
   /// Advertise mode determines advertising frequency and power consumption.
   ///
-  /// This parameter is **Android only** (it has no effect on iOS). It is optional, if not set, the default value will be ADVERTISE_MODE_BALANCED.
+  /// This parameter is **Android only** (it has no effect on iOS). It is optional, if not set, the default value will be [AdvertiseMode.balanced].
   /// You can use one of the options:
   /// <ul>
   /// <li>[AdvertiseMode.lowPower] Consumes less energy, but larger broadcast interval
