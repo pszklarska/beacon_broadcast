@@ -7,17 +7,22 @@ homepage: https://github.com/pszklarska/beacon_broadcast
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
+  flutter: ">=1.20.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  test: ^1.6.3
+  test: ^1.15.5
   flutter_test:
     sdk: flutter
 
 flutter:
   plugin:
-    androidPackage: pl.pszklarska.beaconbroadcast
-    pluginClass: BeaconBroadcastPlugin
+    platforms:
+      android:
+        package: pl.pszklarska.beaconbroadcast
+        pluginClass: BeaconBroadcastPlugin
+      ios:
+        pluginClass: BeaconBroadcastPlugin
