@@ -16,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   static const int minorId = 100;
   static const int transmissionPower = -59;
   static const String identifier = 'com.example.myDeviceRegion';
+  static const AdvertiseMode advertiseMode = AdvertiseMode.lowPower;
   static const String layout = BeaconBroadcast.ALTBEACON_LAYOUT;
   static const int manufacturerId = 0x0118;
   static const List<int> extraData = [100];
@@ -61,14 +62,14 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Is transmission supported?',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
                 Text('$_isTransmissionSupported',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Text('Is beacon started?',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
                 Text('$_isAdvertising',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
                   child: RaisedButton(
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> {
                           .setMajorId(majorId)
                           .setMinorId(minorId)
                           .setTransmissionPower(transmissionPower)
+                          .setAdvertiseMode(advertiseMode)
                           .setIdentifier(identifier)
                           .setLayout(layout)
                           .setManufacturerId(manufacturerId)
@@ -96,11 +98,12 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 Text('Beacon Data',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
                 Text('UUID: $uuid'),
                 Text('Major id: $majorId'),
                 Text('Minor id: $minorId'),
                 Text('Tx Power: $transmissionPower'),
+                Text('Advertise Mode Value: $advertiseMode'),
                 Text('Identifier: $identifier'),
                 Text('Layout: $layout'),
                 Text('Manufacturer Id: $manufacturerId'),
