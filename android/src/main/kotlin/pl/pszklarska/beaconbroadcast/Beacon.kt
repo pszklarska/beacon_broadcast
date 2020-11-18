@@ -29,6 +29,8 @@ class Beacon {
       beaconTransmitter = BeaconTransmitter(context, beaconParser)
     }
 
+    val advMode = beaconData.advertiseMode ?: 1
+
     val beacon = Beacon.Builder()
         .setId1(beaconData.uuid)
         .setId2(beaconData.majorId.toString())
@@ -38,6 +40,7 @@ class Beacon {
         .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
         .build()
 
+    beaconTransmitter?.setAdvertiseMode(advMode)
 
     beaconTransmitter?.startAdvertising(beacon, object : AdvertiseCallback() {
       override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {

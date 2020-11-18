@@ -50,6 +50,7 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
         arguments["majorId"] as Int,
         arguments["minorId"] as Int,
         arguments["transmissionPower"] as Int?,
+        arguments["advertiseMode"] as Int?,
         arguments["layout"] as String?,
         arguments["manufacturerId"] as Int?
     )
@@ -82,6 +83,7 @@ data class BeaconData(
     val majorId: Int,
     val minorId: Int,
     val transmissionPower: Int?,
+    val advertiseMode: Int?,
     val layout: String?,
     val manufacturerId: Int?
 )

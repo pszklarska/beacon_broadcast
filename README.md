@@ -35,6 +35,7 @@ beaconBroadcast
     .setMajorId(1)
     .setMinorId(100)
     .setTransmissionPower(-59) //optional
+    .setAdvertiseMode(AdvertiseMode.lowPower) //Android-only, optional
     .setIdentifier('com.example.myDeviceRegion') //iOS-only, optional
     .setLayout('s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v') //Android-only, optional
     .setManufacturerId(0x001D) //Android-only, optional
