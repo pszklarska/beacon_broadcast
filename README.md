@@ -45,7 +45,7 @@ beaconBroadcast
 You can check what's current state of your beacon:
 
 ``` dart
-var isAdvertising = beaconBroadcast.isAdvertising()
+bool isAdvertising = await beaconBroadcast.isAdvertising()
 ```
 
 You can also register for changes in beacon advertising state:
@@ -61,7 +61,7 @@ Before advertising, you may want to check if your device supports transmitting a
 
 
 ``` dart
-var transmissionSupportStatus = await beaconBroadcast.checkTransmissionSupported();
+BeaconStatus transmissionSupportStatus = await beaconBroadcast.checkTransmissionSupported();
 switch (transmissionSupportStatus) {
   case BeaconStatus.SUPPORTED:
     // You're good to go, you can advertise as a beacon
