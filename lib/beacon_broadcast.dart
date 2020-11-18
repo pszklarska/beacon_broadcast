@@ -38,6 +38,7 @@ class BeaconBroadcast {
   int _majorId;
   int _minorId;
   int _transmissionPower;
+  int _advertiseMode;
   String _identifier = "";
   String _layout;
   int _manufacturerId;
@@ -104,6 +105,22 @@ class BeaconBroadcast {
     return this;
   }
 
+  /// Sets advertise mode for beacon.
+  ///
+  /// Advertise mode determines advertising frequency and power consumption.
+  ///
+  /// This parameter is **Android only** (it has no effect on iOS). It is optional, if not set, the default value will be [AdvertiseMode.balanced].
+  /// You can use one of the options:
+  /// <ul>
+  /// <li>[AdvertiseMode.lowPower] Consumes less energy, but larger broadcast interval
+  /// <li>[AdvertiseMode.balanced] default: Balance between energy usage and broadcast interval
+  /// <li>[AdvertiseMode.lowLatency] Consumes more energy, but smaller broadcast interval
+  /// </ul>
+  BeaconBroadcast setAdvertiseMode(AdvertiseMode advertiseMode) {
+    _advertiseMode = getCorrespondingInt(advertiseMode);
+    return this;
+  }
+
   /// Sets beacon layout.
   ///
   /// This parameter is **Android only**. It's optional, the default is [ALTBEACON_LAYOUT].
@@ -159,7 +176,7 @@ class BeaconBroadcast {
   ///
   /// Before starting you must set  [_uuid].
   /// For the default layout, parameters [_majorId], [_minorId] are also required.
-  /// Other parameters as [_identifier], [_transmissionPower], [_layout], [_manufacturerId] are optional.
+  /// Other parameters as [_identifier], [_transmissionPower], [_advertiseMode], [_layout], [_manufacturerId] are optional.
   ///
   /// For Android, beacon layout is by default set to AltBeacon (check more details here: [AltBeacon - Transmitting as a Beacon](https://altbeacon.github.io/android-beacon-library/beacon-transmitter.html)).
   /// On Android system, it's required to have Bluetooth turn on and to give app permission to location.
@@ -186,6 +203,7 @@ class BeaconBroadcast {
       "majorId": _majorId,
       "minorId": _minorId,
       "transmissionPower": _transmissionPower,
+      "advertiseMode": _advertiseMode,
       "identifier": _identifier,
       "layout": _layout,
       "manufacturerId": _manufacturerId,
@@ -262,5 +280,29 @@ BeaconStatus fromInt(int value) {
       return BeaconStatus.NOT_SUPPORTED_BLE;
     default:
       return BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER;
+  }
+}
+
+enum AdvertiseMode {
+  /// Consumes less energy, but larger broadcast interval
+  lowPower,
+
+  /// Balance between energy usage and broadcast interval
+  balanced,
+
+  /// Consumes more energy, but smaller broadcast interval
+  lowLatency,
+}
+
+int getCorrespondingInt(AdvertiseMode advMode) {
+  switch (advMode) {
+    case AdvertiseMode.lowPower:
+      return 0;
+    case AdvertiseMode.balanced:
+      return 1;
+    case AdvertiseMode.lowLatency:
+      return 2;
+    default:
+      return null;
   }
 }

@@ -40,6 +40,7 @@ beaconBroadcast
     .setMajorId(1)
     .setMinorId(100)
     .setTransmissionPower(-59) //optional
+    .setAdvertiseMode(AdvertiseMode.lowPower) //Android-only, optional
     .setIdentifier('com.example.myDeviceRegion') //iOS-only, optional
     .setLayout('s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v') //Android-only, optional
     .setManufacturerId(0x001D) //Android-only, optional
@@ -49,7 +50,7 @@ beaconBroadcast
 You can check what's current state of your beacon:
 
 ``` dart
-bool isAdvertising = beaconBroadcast.isAdvertising()
+bool isAdvertising = await beaconBroadcast.isAdvertising()
 ```
 
 You can also listen for changes in beacon advertising state:
@@ -171,7 +172,17 @@ documentation:
 > 
 > After advertising your app as a beacon, your app must continue running in the 
 > foreground to broadcast the needed Bluetooth signals. If the user quits the 
-> app, the system stops advertising the device as a peripheral over Bluetooth.
+> app, the system stops advertising the device as a peripheral over Bluetooth.In addition, since iOS 13, a privacy usage description is required to use Bluetooth. Otherwise, the app will experience a runtime crash.
+To remedy this, add the following lines to your Info.plist
+``` xml
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>(Reason bluetooth is used)</string>
+```
+For deployment targets earlier than iOS 13, add these additional lines to your Info.plist
+``` xml
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>(Reason bluetooth is used)</string>
+```
 
 ### About
 
