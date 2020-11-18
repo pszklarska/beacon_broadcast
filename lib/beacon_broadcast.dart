@@ -42,6 +42,7 @@ class BeaconBroadcast {
   String _identifier = "";
   String _layout;
   int _manufacturerId;
+  List<int> _extraData;
 
   static const MethodChannel _methodChannel =
       const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
@@ -149,6 +150,28 @@ class BeaconBroadcast {
     return this;
   }
 
+  /// Sets extra data.
+  ///
+  /// This parameter is **Android only**. If beacon layout allows it, you can
+  /// add extra bytes to the data transmitted by the beacon.
+  /// Value must be within a range 0-255.
+  ///
+  /// For more information check section
+  /// [Adding extra data](https://github.com/pszklarska/beacon_broadcast#adding-extra-data)
+  /// in the documentation.
+  ///
+  /// **For iOS**, beacon layout doesn't allow to transmit any extra data.
+  ///
+  /// This parameter is optional.
+  BeaconBroadcast setExtraData(List<int> extraData) {
+    if (extraData.any((value) => value < 0 || value > 255)) {
+      throw new IllegalArgumentException(
+          "Illegal arguments! Extra data values must be within a byte range 0-255");
+    }
+    _extraData = extraData;
+    return this;
+  }
+
   /// Starts beacon advertising.
   ///
   /// Before starting you must set  [_uuid].
@@ -184,6 +207,7 @@ class BeaconBroadcast {
       "identifier": _identifier,
       "layout": _layout,
       "manufacturerId": _manufacturerId,
+      "extraData": _extraData,
     };
 
     await _methodChannel.invokeMethod('start', params);
