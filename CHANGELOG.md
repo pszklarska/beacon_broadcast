@@ -1,3 +1,7 @@
+## 0.2.3
+
+Fixed data fields support on Android
+
 ## 0.2.2
 
 Added support for setting data fields on Android
