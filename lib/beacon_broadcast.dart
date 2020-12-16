@@ -34,15 +34,15 @@ class BeaconBroadcast {
   static const String URI_BEACON_LAYOUT =
       's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
 
-  String _uuid;
-  int _majorId;
-  int _minorId;
-  int _transmissionPower;
-  int _advertiseMode;
+  String? _uuid;
+  int? _majorId;
+  int? _minorId;
+  int? _transmissionPower;
+  int? _advertiseMode;
   String _identifier = "";
-  String _layout;
-  int _manufacturerId;
-  List<int> _extraData;
+  String? _layout;
+  int? _manufacturerId;
+  List<int>? _extraData;
 
   static const MethodChannel _methodChannel =
       const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
@@ -186,7 +186,7 @@ class BeaconBroadcast {
   /// continue running in the foreground to broadcast the needed Bluetooth signals. If the user
   /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
-    if (_uuid == null || _uuid.isEmpty) {
+    if (_uuid == null || _uuid!.isEmpty) {
       throw new IllegalArgumentException(
           "Illegal arguments! UUID must not be null or empty: UUID: $_uuid");
     }
@@ -219,7 +219,7 @@ class BeaconBroadcast {
   }
 
   /// Returns `true` if beacon is advertising
-  Future<bool> isAdvertising() async {
+  Future<bool?> isAdvertising() async {
     return await _methodChannel.invokeMethod('isAdvertising');
   }
 
@@ -270,7 +270,7 @@ enum BeaconStatus {
   notSupportedCannotGetAdvertiser
 }
 
-BeaconStatus fromInt(int value) {
+BeaconStatus fromInt(int? value) {
   switch (value) {
     case 0:
       return BeaconStatus.supported;
@@ -294,7 +294,7 @@ enum AdvertiseMode {
   lowLatency,
 }
 
-int getCorrespondingInt(AdvertiseMode advMode) {
+int? getCorrespondingInt(AdvertiseMode advMode) {
   switch (advMode) {
     case AdvertiseMode.lowPower:
       return 0;
