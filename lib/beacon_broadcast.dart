@@ -234,10 +234,10 @@ class BeaconBroadcast {
   /// Checks if device supports transmission. For iOS it returns always true.
   ///
   /// Possible values (for Android):
-  /// * [BeaconStatus.SUPPORTED] device supports transmission
-  /// * [BeaconStatus.NOT_SUPPORTED_MIN_SDK] Android system version on the device is lower than 21
-  /// * [BeaconStatus.NOT_SUPPORTED_BLE] BLE is not supported on this device
-  /// * [BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER] device does not have a compatible chipset
+  /// * [BeaconStatus.supported] device supports transmission
+  /// * [BeaconStatus.notSupportedMinSdk] Android system version on the device is lower than 21
+  /// * [BeaconStatus.notSupportedBle] BLE is not supported on this device
+  /// * [BeaconStatus.notSupportedCannotGetAdvertiser] device does not have a compatible chipset
   /// or driver
   Future<BeaconStatus> checkTransmissionSupported() async {
     var isTransmissionSupported =
@@ -258,28 +258,28 @@ class IllegalArgumentException implements Exception {
 
 enum BeaconStatus {
   /// Device supports transmitting as a beacon
-  SUPPORTED,
+  supported,
 
   /// Android system version on the device is too low (min. is 21)
-  NOT_SUPPORTED_MIN_SDK,
+  notSupportedMinSdk,
 
   /// Device doesn't support Bluetooth Low Energy
-  NOT_SUPPORTED_BLE,
+  notSupportedBle,
 
   /// Device's Bluetooth chipset or driver doesn't support transmitting
-  NOT_SUPPORTED_CANNOT_GET_ADVERTISER
+  notSupportedCannotGetAdvertiser
 }
 
 BeaconStatus fromInt(int value) {
   switch (value) {
     case 0:
-      return BeaconStatus.SUPPORTED;
+      return BeaconStatus.supported;
     case 1:
-      return BeaconStatus.NOT_SUPPORTED_MIN_SDK;
+      return BeaconStatus.notSupportedMinSdk;
     case 2:
-      return BeaconStatus.NOT_SUPPORTED_BLE;
+      return BeaconStatus.notSupportedBle;
     default:
-      return BeaconStatus.NOT_SUPPORTED_CANNOT_GET_ADVERTISER;
+      return BeaconStatus.notSupportedCannotGetAdvertiser;
   }
 }
 
