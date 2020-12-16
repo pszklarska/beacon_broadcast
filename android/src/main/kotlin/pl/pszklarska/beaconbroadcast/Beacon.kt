@@ -36,11 +36,11 @@ class Beacon {
         .setId2(beaconData.majorId.toString())
         .setId3(beaconData.minorId.toString())
         .setTxPower(beaconData.transmissionPower ?: -59)
-        .setDataFields(beaconData.extraData ?: listOf(0L))
+        .setDataFields(beaconData.extraData?.map { it.toLong() } ?: listOf(0L))
         .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
         .build()
 
-    beaconTransmitter?.setAdvertiseMode(advertiseMode)
+    beaconTransmitter?.advertiseMode = advertiseMode
 
     beaconTransmitter?.startAdvertising(beacon, object : AdvertiseCallback() {
       override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
