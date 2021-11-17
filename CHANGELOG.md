@@ -1,3 +1,7 @@
+## 0.3.1
+
+Null Safety
+
 ## 0.2.3
 
 Fixed data fields support on Android
