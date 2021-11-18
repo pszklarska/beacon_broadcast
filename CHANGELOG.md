@@ -1,6 +1,6 @@
-## 0.3.1
+## 0.3.0
 
-Null Safety
+Added support for null safety
 
 ## 0.2.3
 
