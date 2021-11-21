@@ -23,23 +23,20 @@ class _MyAppState extends State<MyApp> {
 
   BeaconBroadcast beaconBroadcast = BeaconBroadcast();
 
-  BeaconStatus _isTransmissionSupported;
   bool _isAdvertising = false;
+  BeaconStatus _isTransmissionSupported;
   StreamSubscription<bool> _isAdvertisingSubscription;
 
   @override
   void initState() {
     super.initState();
-    beaconBroadcast
-        .checkTransmissionSupported()
-        .then((isTransmissionSupported) {
+    beaconBroadcast.checkTransmissionSupported().then((isTransmissionSupported) {
       setState(() {
         _isTransmissionSupported = isTransmissionSupported;
       });
     });
 
-    _isAdvertisingSubscription =
-        beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
+    _isAdvertisingSubscription = beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
       setState(() {
         _isAdvertising = isAdvertising;
       });
@@ -61,18 +58,14 @@ class _MyAppState extends State<MyApp> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Is transmission supported?',
-                    style: Theme.of(context).textTheme.headline5),
-                Text('$_isTransmissionSupported',
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text('Is transmission supported?', style: Theme.of(context).textTheme.headline5),
+                Text('$_isTransmissionSupported', style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
-                Text('Is beacon started?',
-                    style: Theme.of(context).textTheme.headline5),
-                Text('$_isAdvertising',
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text('Has beacon started?', style: Theme.of(context).textTheme.headline5),
+                Text('$_isAdvertising', style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       beaconBroadcast
                           .setUUID(uuid)
@@ -90,15 +83,14 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 Center(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       beaconBroadcast.stop();
                     },
                     child: Text('STOP'),
                   ),
                 ),
-                Text('Beacon Data',
-                    style: Theme.of(context).textTheme.headline5),
+                Text('Beacon Data', style: Theme.of(context).textTheme.headline5),
                 Text('UUID: $uuid'),
                 Text('Major id: $majorId'),
                 Text('Minor id: $minorId'),
@@ -118,9 +110,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
+    _isAdvertisingSubscription?.cancel();
     super.dispose();
-    if (_isAdvertisingSubscription != null) {
-      _isAdvertisingSubscription.cancel();
-    }
   }
 }
