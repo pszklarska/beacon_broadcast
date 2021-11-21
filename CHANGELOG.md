@@ -1,6 +1,7 @@
 ## 0.3.0
 
 Added support for null safety
+Added support for nullable identifiers (e.g. for the Eddystone layout)
 
 ## 0.2.3
 

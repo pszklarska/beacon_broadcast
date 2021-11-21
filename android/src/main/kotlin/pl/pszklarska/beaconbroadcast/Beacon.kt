@@ -31,14 +31,14 @@ class Beacon {
 
     val advertiseMode = beaconData.advertiseMode ?: 1
 
-    val beacon = Beacon.Builder()
-        .setId1(beaconData.uuid)
-        .setId2(beaconData.majorId.toString())
-        .setId3(beaconData.minorId.toString())
-        .setTxPower(beaconData.transmissionPower ?: -59)
-        .setDataFields(beaconData.extraData?.map { it.toLong() } ?: listOf(0L))
-        .setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
-        .build()
+    val beacon = Beacon.Builder().apply {
+      setId1(beaconData.uuid)
+      beaconData.majorId?.let { setId2(it.toString()) }
+      beaconData.minorId?.let { setId3(it.toString()) }
+      setTxPower(beaconData.transmissionPower ?: -59)
+      setDataFields(beaconData.extraData?.map { it.toLong() } ?: listOf(0L))
+      setManufacturer(beaconData.manufacturerId ?: RADIUS_NETWORK_MANUFACTURER)
+    }.build()
 
     beaconTransmitter?.advertiseMode = advertiseMode
 

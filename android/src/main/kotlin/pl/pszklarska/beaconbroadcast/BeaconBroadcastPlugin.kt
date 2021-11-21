@@ -47,8 +47,8 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
     val arguments = call.arguments as Map<String, Any>
     val beaconData = BeaconData(
         arguments["uuid"] as String,
-        arguments["majorId"] as Int,
-        arguments["minorId"] as Int,
+        arguments["majorId"] as Int?,
+        arguments["minorId"] as Int?,
         arguments["transmissionPower"] as Int?,
         arguments["advertiseMode"] as Int?,
         arguments["layout"] as String?,
@@ -81,8 +81,8 @@ class BeaconBroadcastPlugin(private val beacon: Beacon) : MethodChannel.MethodCa
 
 data class BeaconData(
     val uuid: String,
-    val majorId: Int,
-    val minorId: Int,
+    val majorId: Int?,
+    val minorId: Int?,
     val transmissionPower: Int?,
     val advertiseMode: Int?,
     val layout: String?,
