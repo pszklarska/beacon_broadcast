@@ -1,3 +1,7 @@
+## 0.3.0
+
+Added support for null safety
+
 ## 0.2.3
 
 Fixed data fields support on Android
