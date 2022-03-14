@@ -1,3 +1,7 @@
+## 0.3.1
+
+Added support for android apps targetting SDK 31 and above
+
 ## 0.3.0
 
 Added support for null safety
