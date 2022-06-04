@@ -59,7 +59,7 @@ jobs:
 
       # Run package publish dry-run
       - name: Dry-run package publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
+        uses: sakebook/actions-flutter-pub-publisher@v1.4.0
         with:
           credential: ${{ secrets.CREDENTIALS_JSON }}
           skip_test: true
