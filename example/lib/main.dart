@@ -30,13 +30,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    beaconBroadcast.checkTransmissionSupported().then((isTransmissionSupported) {
+    beaconBroadcast
+        .checkTransmissionSupported()
+        .then((isTransmissionSupported) {
       setState(() {
         _isTransmissionSupported = isTransmissionSupported;
       });
     });
 
-    _isAdvertisingSubscription = beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
+    _isAdvertisingSubscription =
+        beaconBroadcast.getAdvertisingStateChange().listen((isAdvertising) {
       setState(() {
         _isAdvertising = isAdvertising;
       });
@@ -58,11 +61,15 @@ class _MyAppState extends State<MyApp> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Is transmission supported?', style: Theme.of(context).textTheme.headline5),
-                Text('$_isTransmissionSupported', style: Theme.of(context).textTheme.subtitle1),
+                Text('Is transmission supported?',
+                    style: Theme.of(context).textTheme.headline5),
+                Text('$_isTransmissionSupported',
+                    style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
-                Text('Has beacon started?', style: Theme.of(context).textTheme.headline5),
-                Text('$_isAdvertising', style: Theme.of(context).textTheme.subtitle1),
+                Text('Has beacon started?',
+                    style: Theme.of(context).textTheme.headline5),
+                Text('$_isAdvertising',
+                    style: Theme.of(context).textTheme.subtitle1),
                 Container(height: 16.0),
                 Center(
                   child: ElevatedButton(
@@ -90,7 +97,8 @@ class _MyAppState extends State<MyApp> {
                     child: Text('STOP'),
                   ),
                 ),
-                Text('Beacon Data', style: Theme.of(context).textTheme.headline5),
+                Text('Beacon Data',
+                    style: Theme.of(context).textTheme.headline5),
                 Text('UUID: $uuid'),
                 Text('Major id: $majorId'),
                 Text('Minor id: $minorId'),
