@@ -18,7 +18,7 @@ jobs:
       # Publish the plugin
       - uses: actions/checkout@v1
       - name: Publish
-        uses: ./actions/pub-dev-publish
+        uses: ./.github/actions/pub-dev-publish
         with:
           credentials: ${{ secrets.CREDENTIALS_JSON }}
           dry_run: false

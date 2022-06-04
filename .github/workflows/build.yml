@@ -60,7 +60,7 @@ jobs:
       # Run package publish dry-run
       - uses: actions/checkout@v1
       - name: Dry-run package publish
-        uses: ./actions/pub-dev-publish
+        uses: ./.github/actions/pub-dev-publish
         with:
           credentials: ${{ secrets.CREDENTIALS_JSON }}
           dry_run: true
