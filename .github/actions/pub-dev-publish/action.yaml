@@ -1,0 +1,28 @@
+name: 'Publish to pub.dev'
+description: 'Action to publish (or perform a dry-run) to pub.dev'
+inputs:
+  credentials:
+    required: true
+  dry_run:
+    required: false
+    default: true
+runs:
+  using: "composite"
+  steps:
+    - env:
+        credentials: ${{ inputs.credentials }}
+        dry_run: ${{ inputs.dry_run }}
+      run: |
+        echo "Copying credentials..."
+        mkdir -p $HOME/.config/dart
+        echo "${{ credentials }}" >> $HOME/.config/dart/pub-credentials.json
+        
+        if "$dry_run"; then
+          echo "Running dry-run..."
+          dart pub publish --dry-run
+        else
+          echo "Publishing the package..."
+          dart pub publish -f
+        fi
+        rm $HOME/.config/dart/pub-credentials.json
+  shell: bash
