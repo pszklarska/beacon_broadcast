@@ -23,11 +23,16 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class BeaconBroadcast {
-  static const String ALTBEACON_LAYOUT = 'm:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25';
-  static const String EDDYSTONE_TLM_LAYOUT = 'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
-  static const String EDDYSTONE_UID_LAYOUT = 's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
-  static const String EDDYSTONE_URL_LAYOUT = 's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
-  static const String URI_BEACON_LAYOUT = 's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
+  static const String ALTBEACON_LAYOUT =
+      'm:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25';
+  static const String EDDYSTONE_TLM_LAYOUT =
+      'x,s:0-1=feaa,m:2-2=20,d:3-3,d:4-5,d:6-7,d:8-11,d:12-15';
+  static const String EDDYSTONE_UID_LAYOUT =
+      's:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19';
+  static const String EDDYSTONE_URL_LAYOUT =
+      's:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-21v';
+  static const String URI_BEACON_LAYOUT =
+      's:0-1=fed8,m:2-2=00,p:3-3:-41,i:4-21v';
 
   String? _uuid;
   int? _majorId;
@@ -39,9 +44,11 @@ class BeaconBroadcast {
   int? _manufacturerId;
   List<int>? _extraData;
 
-  static const MethodChannel _methodChannel = const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
+  static const MethodChannel _methodChannel =
+      const MethodChannel('pl.pszklarska.beaconbroadcast/beacon_state');
 
-  static const EventChannel _eventChannel = const EventChannel('pl.pszklarska.beaconbroadcast/beacon_events');
+  static const EventChannel _eventChannel =
+      const EventChannel('pl.pszklarska.beaconbroadcast/beacon_events');
 
   /// Sets UUID for beacon.
   ///
@@ -158,7 +165,8 @@ class BeaconBroadcast {
   /// This parameter is optional.
   BeaconBroadcast setExtraData(List<int> extraData) {
     if (extraData.any((value) => value < 0 || value > 255)) {
-      throw new IllegalArgumentException("Illegal arguments! Extra data values must be within a byte range 0-255");
+      throw new IllegalArgumentException(
+          "Illegal arguments! Extra data values must be within a byte range 0-255");
     }
     _extraData = extraData;
     return this;
@@ -179,11 +187,14 @@ class BeaconBroadcast {
   /// quits the app, the system stops advertising the device as a peripheral over Bluetooth.
   Future<void> start() async {
     if (_uuid == null || _uuid!.isEmpty) {
-      throw new IllegalArgumentException("Illegal arguments! UUID must not be null or empty: UUID: $_uuid");
+      throw new IllegalArgumentException(
+          "Illegal arguments! UUID must not be null or empty: UUID: $_uuid");
     }
 
-    if ((_layout == null || _layout == ALTBEACON_LAYOUT) && (_majorId == null || _minorId == null)) {
-      throw new IllegalArgumentException("Illegal arguments! MajorId and minorId must not be null or empty: "
+    if ((_layout == null || _layout == ALTBEACON_LAYOUT) &&
+        (_majorId == null || _minorId == null)) {
+      throw new IllegalArgumentException(
+          "Illegal arguments! MajorId and minorId must not be null or empty: "
           "majorId: $_majorId, minorId: $_minorId");
     }
 
@@ -229,7 +240,8 @@ class BeaconBroadcast {
   /// * [BeaconStatus.notSupportedCannotGetAdvertiser] device does not have a compatible chipset
   /// or driver
   Future<BeaconStatus> checkTransmissionSupported() async {
-    var isTransmissionSupported = await _methodChannel.invokeMethod('isTransmissionSupported');
+    var isTransmissionSupported =
+        await _methodChannel.invokeMethod('isTransmissionSupported');
     return _beaconStatusFromInt(isTransmissionSupported);
   }
 }
@@ -265,7 +277,8 @@ Map<int, BeaconStatus> _intToBeaconStatus = {
 };
 
 BeaconStatus _beaconStatusFromInt(int? value) {
-  if (!_intToBeaconStatus.containsKey(value)) return BeaconStatus.notSupportedCannotGetAdvertiser;
+  if (!_intToBeaconStatus.containsKey(value))
+    return BeaconStatus.notSupportedCannotGetAdvertiser;
   return _intToBeaconStatus[value]!;
 }
 
@@ -288,5 +301,7 @@ Map<int, AdvertiseMode> _intToAdvertiseMode = {
 
 int? _advertiseModeToInt(AdvertiseMode advMode) {
   if (!_intToAdvertiseMode.containsValue(advMode)) return null;
-  return _intToAdvertiseMode.entries.firstWhere((element) => element.value == advMode).key;
+  return _intToAdvertiseMode.entries
+      .firstWhere((element) => element.value == advMode)
+      .key;
 }

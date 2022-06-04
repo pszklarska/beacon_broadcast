@@ -97,14 +97,23 @@ void main() {
           throwsA(isA<IllegalArgumentException>()));
     });
 
-    test('when identifier and transmission power are not set starts normally', () async {
+    test('when identifier and transmission power are not set starts normally',
+        () async {
       onStartMethodReturn(Future.value());
-      expect(() => BeaconBroadcast().setUUID("uuid").setMajorId(1).setMinorId(1).start(), returnsNormally);
+      expect(
+          () => BeaconBroadcast()
+              .setUUID("uuid")
+              .setMajorId(1)
+              .setMinorId(1)
+              .start(),
+          returnsNormally);
     });
 
-    test('when extra data contains integer out of range throws exception', () async {
+    test('when extra data contains integer out of range throws exception',
+        () async {
       onStartMethodReturn(Future.value());
-      expect(() => BeaconBroadcast().setUUID("uuid").setExtraData([270]).start(),
+      expect(
+          () => BeaconBroadcast().setUUID("uuid").setExtraData([270]).start(),
           throwsA(isA<IllegalArgumentException>()));
     });
 
@@ -152,22 +161,29 @@ void main() {
   group('checking if transmission is supported', () {
     test('when device returns 0 return BeaconStatus.supported', () async {
       onIsTransmissionSupportedMethodReturn(Future.value(0));
-      expect(await BeaconBroadcast().checkTransmissionSupported(), BeaconStatus.supported);
+      expect(await BeaconBroadcast().checkTransmissionSupported(),
+          BeaconStatus.supported);
     });
 
-    test('when device returns 1 return BeaconStatus.notSupportedMinSdk', () async {
+    test('when device returns 1 return BeaconStatus.notSupportedMinSdk',
+        () async {
       onIsTransmissionSupportedMethodReturn(Future.value(1));
-      expect(await BeaconBroadcast().checkTransmissionSupported(), BeaconStatus.notSupportedMinSdk);
+      expect(await BeaconBroadcast().checkTransmissionSupported(),
+          BeaconStatus.notSupportedMinSdk);
     });
 
     test('when device returns 2 return BeaconStatus.notSupportedBle', () async {
       onIsTransmissionSupportedMethodReturn(Future.value(2));
-      expect(await BeaconBroadcast().checkTransmissionSupported(), BeaconStatus.notSupportedBle);
+      expect(await BeaconBroadcast().checkTransmissionSupported(),
+          BeaconStatus.notSupportedBle);
     });
 
-    test('when device returns other value return BeaconStatus.notSupportedCannotGetAdvertiser', () async {
+    test(
+        'when device returns other value return BeaconStatus.notSupportedCannotGetAdvertiser',
+        () async {
       onIsTransmissionSupportedMethodReturn(Future.value(3));
-      expect(await BeaconBroadcast().checkTransmissionSupported(), BeaconStatus.notSupportedCannotGetAdvertiser);
+      expect(await BeaconBroadcast().checkTransmissionSupported(),
+          BeaconStatus.notSupportedCannotGetAdvertiser);
     });
   });
 
