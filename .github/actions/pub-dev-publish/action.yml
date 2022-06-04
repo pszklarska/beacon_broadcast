@@ -25,4 +25,4 @@ runs:
           dart pub publish -f
         fi
         rm $HOME/.config/dart/pub-credentials.json
-  shell: bash
+      shell: bash
