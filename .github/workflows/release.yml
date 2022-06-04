@@ -16,6 +16,7 @@ jobs:
           ref: ${{ github.event.release.tag_name }}
 
       # Publish the plugin
+      - uses: actions/checkout@v1
       - name: Publish
         uses: ./actions/pub-dev-publish
         with:
