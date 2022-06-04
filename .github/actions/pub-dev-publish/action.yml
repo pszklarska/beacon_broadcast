@@ -15,7 +15,7 @@ runs:
       run: |
         echo "Copying credentials..."
         mkdir -p $HOME/.config/dart
-        echo "${{ credentials }}" >> $HOME/.config/dart/pub-credentials.json
+        echo "${credentials}" >> $HOME/.config/dart/pub-credentials.json
         
         if "$dry_run"; then
           echo "Running dry-run..."
