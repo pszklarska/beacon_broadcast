@@ -19,10 +19,10 @@ runs:
         
         if "$dry_run"; then
           echo "Running dry-run..."
-          dart pub publish --dry-run
+          flutter pub publish --dry-run
         else
           echo "Publishing the package..."
-          dart pub publish -f
+          flutter pub publish -f
         fi
         rm $HOME/.config/dart/pub-credentials.json
       shell: bash
