@@ -57,6 +57,10 @@ jobs:
       - name: Fetch sources
         uses: actions/checkout@v2.3.4
 
+      # Install Flutter
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1.5.3
+
       # Run package publish dry-run
       - name: Dry-run package publish
         uses: ./.github/actions/pub-dev-publish
